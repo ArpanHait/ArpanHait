@@ -32,7 +32,7 @@
 ### 🛠️ Languages
 
 <p align="center">
-  <a href="https://skillicons.dev">
+  <a href="">
     <img src="https://skillicons.dev/icons?i=c,cpp,py,html,css,java,js" />
   </a>
 </p>
@@ -40,7 +40,7 @@
 ### Tools
 
 <p align="center">
-  <a href="https://skillicons.dev">
+  <a href="">
     <img src="https://skillicons.dev/icons?i=vscode,github,git,gcp,netlify,docker,nodejs,flutter,figma,firebase" />
   </a>
 </p>
@@ -49,15 +49,7 @@
 
 ### 📊 My GitHub Stats
 
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=YOUR-USERNAME-HERE&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true" alt="My GitHub Stats" width="48%">
-  
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=YOUR-USERNAME-HERE&layout=compact&theme=tokyonight" alt="Top Languages" width="48%">
-  
-  <br>
-  
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=YOUR-USERNAME-HERE&theme=tokyonight" alt="GitHub Streak" width="48%">
-</p>
+[![](./github-progress.svg)](#)
 
 ---
 
