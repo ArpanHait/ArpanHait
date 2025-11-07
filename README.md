@@ -49,7 +49,7 @@
 
 ### 📊 My GitHub Stats
 
-[![](./github-progress.svg)](#)
+[![](./progress.svg)](#)
 
 ---
 
