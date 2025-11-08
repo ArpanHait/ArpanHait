@@ -28,13 +28,29 @@ I'm a student passionate about computing stuffs and learning new things. Current
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=arpanhait&theme=react-dark&hide_border=true&area=true" alt="Contribution Graph">
 </p>
 
-## 🔗 Connect with me
+## <p align="center">🔗 Connect with me </p>
 
-[![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://#YOUR-TELEGRAM-LINK)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://#YOUR-LINKEDIN-LINK)
-[![Discord](https://img.shields.io/badge/Discord-E8E8E8?style=for-the-badge&logo=discord&logoColor=5865F2)](https://#YOUR-DISCORD-LINK)
-[![Instagram](https://img.shields.io/badge/Instagram-F7B93E?style=for-the-badge&logo=instagram&logoColor=white)](https://#YOUR-INSTAGRAM-LINK)
-[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:YOUR-EMAIL@gmail.com)
-[![Twitter](https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white)](https://#YOUR-TWITTER-LINK)
-[![Portfolio](https://img.shields.io/badge/Portfolio-28A845?style=for-the-badge&logo=website&logoColor=white)](https://#YOUR-PORTFOLIO-LINK)
+<p align="center">
+  <a href="https://#YOUR-TELEGRAM-LINK">
+    <img src="https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram" />
+  </a>
+  <a href="https://#YOUR-LINKEDIN-LINK">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+  </a>
+  <a href="https://#YOUR-DISCORD-LINK">
+    <img src="https://img.shields.io/badge/Discord-E8E8E8?style=for-the-badge&logo=discord&logoColor=5865F2" alt="Discord" />
+  </a>
+  <a href="https://#YOUR-INSTAGRAM-LINK">
+    <img src="https://img.shields.io/badge/Instagram-F7B93E?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram" />
+  </a>
+  <a href="mailto:YOUR-EMAIL@gmail.com">
+    <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail" />
+  </a>
+  <a href="https://#YOUR-TWITTER-LINK">
+    <img src="https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white" alt="Twitter" />
+  </a>
+  <a href="https://#YOUR-PORTFOLIO-LINK">
+    <img src="https://img.shields.io/badge/Portfolio-28A845?style=for-the-badge&logo=website&logoColor=white" alt="Portfolio" />
+  </a>
+</p>
 
