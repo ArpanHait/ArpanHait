@@ -1,45 +1,18 @@
-<h1 align="center">
-  Hey there! 👋
-</h1>
+## Hey there [<img src="https://raw.githubusercontent.com/ABSphreak/ABSphreak/master/gifs/moving.gif" width="30px">](#) 
 
-<p align="center">
-  I'm a passionate developer/student learning new things and building cool projects.
-  <br>
-  (Update this text to be about YOU!)
-</p>
+I'm a student passionate about computing stuffs and learning new things. Currently increasing my knowledge by learning more languages while working on some small projects & contributing to open source community.
 
-<p align="center">
-  <a href="https://www.linkedin.com/in/YOUR-LINKEDIN-USERNAME">
-    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
-  </a>
-  <a href="https://twitter.com/YOUR-TWITTER-USERNAME">
-    <img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter">
-  </a>
-  <a href="mailto:YOUR-EMAIL@gmail.com">
-    <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail">
-  </a>
-  <a href="https://YOUR-PORTFOLIO-WEBSITE.com">
-    <img src="https://img.shields.io/badge/Portfolio-Website-blue?style=for-the-badge&logo=rss&logoColor=white" alt="Portfolio">
-  </a>
-</p>
+## 🛠️ Languages
 
-<p align="center">
-  <img src="https://komarev.com/ghpvc/?username=arpanhait&style=for-the-badge&color=brightgreen" alt="Profile views">
-</p>
-
----
-
-### 🛠️ Languages
-
-<p align="center">
+<p align="">
   <a href="">
     <img src="https://skillicons.dev/icons?i=c,cpp,py,html,css,java,js" />
   </a>
 </p>
 
-### Tools
+## 🛠️ Tools
 
-<p align="center">
+<p align="">
   <a href="">
     <img src="https://skillicons.dev/icons?i=vscode,github,git,gcp,netlify,docker,nodejs,flutter,figma,firebase" />
   </a>
@@ -48,10 +21,17 @@
 ---
 
 ### 📊 My GitHub Stats
-
 [![](./progress.svg)](#)
 
-
-<p align="center">
+<p align="">
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=arpanhait&theme=react-dark&hide_border=true&area=true" alt="Contribution Graph">
 </p>
+
+## 🔗 Connect with me
+[![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://#YOUR-TELEGRAM-LINK)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://#YOUR-LINKEDIN-LINK)
+[![Discord](https://img.shields.io/badge/Discord-E8E8E8?style=for-the-badge&logo=discord&logoColor=5865F2)](https://#YOUR-DISCORD-LINK)
+[![Instagram](https://img.shields.io/badge/Instagram-F7B93E?style=for-the-badge&logo=instagram&logoColor=white)](https://#YOUR-INSTAGRAM-LINK)
+[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:YOUR-EMAIL@gmail.com)
+[![Twitter](https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white)](https://#YOUR-TWITTER-LINK)
+[![Portfolio](https://img.shields.io/badge/Portfolio-28A845?style=for-the-badge&logo=website&logoColor=white)](https://#YOUR-PORTFOLIO-LINK)
