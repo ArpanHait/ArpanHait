@@ -31,7 +31,7 @@
 
 ### 🛠️ Languages
 
-<p align="center">
+<p align="">
   <a href="">
     <img src="https://skillicons.dev/icons?i=c,cpp,py,html,css,java,js" />
   </a>
@@ -49,9 +49,7 @@
 
 ### 📊 My GitHub Stats
 
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=arpanhait&show_icons=true&theme=radical" alt="Arpan's GitHub Stats">
-</p>
+[![](./progress.svg)](#)
 
 ---
 
