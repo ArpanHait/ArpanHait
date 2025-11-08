@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-  <img src="https://komarev.com/ghpvc/?username=YOUR-USERNAME-HERE&style=for-the-badge&color=brightgreen" alt="Profile views">
+  <img src="https://komarev.com/ghpvc/?username=arpanhait&style=for-the-badge&color=brightgreen" alt="Profile views">
 </p>
 
 ---
@@ -32,7 +32,7 @@
 ### 🛠️ Languages
 
 <p align="center">
-  <a href="https://skillicons.dev">
+  <a href="">
     <img src="https://skillicons.dev/icons?i=c,cpp,py,html,css,java,js" />
   </a>
 </p>
@@ -40,7 +40,7 @@
 ### Tools
 
 <p align="center">
-  <a href="https://skillicons.dev">
+  <a href="">
     <img src="https://skillicons.dev/icons?i=vscode,github,git,gcp,netlify,docker,nodejs,flutter,figma,firebase" />
   </a>
 </p>
@@ -50,13 +50,7 @@
 ### 📊 My GitHub Stats
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=YOUR-USERNAME-HERE&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true" alt="My GitHub Stats" width="48%">
-  
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=YOUR-USERNAME-HERE&layout=compact&theme=tokyonight" alt="Top Languages" width="48%">
-  
-  <br>
-  
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=YOUR-USERNAME-HERE&theme=tokyonight" alt="GitHub Streak" width="48%">
+  <img src="https://github-readme-stats.vercel.app/api?username=arpanhait&show_icons=true&theme=radical" alt="Arpan's GitHub Stats">
 </p>
 
 ---
@@ -64,13 +58,11 @@
 ### 🏆 GitHub Trophies
 
 <p align="center">
-  <img src="https://github-profile-trophy.vercel.app/?username=YOUR-USERNAME-HERE&theme=radical&no-frame=true&no-bg=true&margin-w=15&margin-h=15" alt="GitHub Trophies">
+  <img src="https://github-profile-trophy.vercel.app/?username=arpanhait&theme=radical&no-frame=true&no-bg=true&margin-w=15&margin-h=15" alt="GitHub Trophies">
 </p>
 
 ---
 
-### 📈 My Contribution Graph
-
 <p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=YOUR-USERNAME-HERE&theme=react-dark&hide_border=true&area=true" alt="Contribution Graph">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=arpanhait&theme=react-dark&hide_border=true&area=true" alt="Contribution Graph">
 </p>
