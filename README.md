@@ -2,7 +2,7 @@
 
 I'm a student passionate about computing stuffs and learning new things. Currently increasing my knowledge by learning more languages while working on some small projects & contributing to open source community.
 
-## <p align="center">🛠️ Languages</p>
+## <p align="center">⚙️ Languages & Tools ⚙️</p>
 
 <p align="center">
   <a href="">
@@ -10,8 +10,7 @@ I'm a student passionate about computing stuffs and learning new things. Current
   </a>
 </p>
 
-## <p align="center">🛠️ Tools </p>
-
+##
 <p align="center">
   <a href="">
     <img src="https://skillicons.dev/icons?i=vscode,github,git,gcp,netlify,docker,nodejs,flutter,figma,firebase" />
@@ -23,7 +22,8 @@ I'm a student passionate about computing stuffs and learning new things. Current
 ### 📊 My GitHub Stats
 [![](./progress.svg)](#)
 
-<p align="">
+---
+<p align="center">
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=arpanhait&theme=react-dark&hide_border=true&area=true" alt="Contribution Graph">
 </p>
 
