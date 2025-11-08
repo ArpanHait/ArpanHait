@@ -4,7 +4,7 @@ I'm a student passionate about computing stuffs and learning new things. Current
 
 ## <p align="center">🛠️ Languages</p>
 
-<p align="">
+<p align="center">
   <a href="">
     <img src="https://skillicons.dev/icons?i=c,cpp,py,html,css,java,js" />
   </a>
@@ -21,20 +21,7 @@ I'm a student passionate about computing stuffs and learning new things. Current
 ---
 
 ### 📊 My GitHub Stats
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=arpanhait&show_icons=true&theme=radical" alt="Arpan's GitHub Stats">
-</p>
-
----
-
-### 🏆 GitHub Trophies
-
-<p align="center">
-  <img src="https://github-profile-trophy.vercel.app/?username=arpanhait&theme=radical&no-frame=true&no-bg=true&margin-w=15&margin-h=15" alt="GitHub Trophies">
-</p>
-
----
+[![](./progress.svg)](#)
 
 <p align="">
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=arpanhait&theme=react-dark&hide_border=true&area=true" alt="Contribution Graph">
