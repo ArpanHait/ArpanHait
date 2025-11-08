@@ -2,17 +2,17 @@
 
 I'm a student passionate about computing stuffs and learning new things. Currently increasing my knowledge by learning more languages while working on some small projects & contributing to open source community.
 
-## 🛠️ Languages
+## <p align="center">🛠️ Languages</p>
 
-<p align="">
+<p align="center">
   <a href="">
     <img src="https://skillicons.dev/icons?i=c,cpp,py,html,css,java,js" />
   </a>
 </p>
 
-## 🛠️ Tools
+## <p align="center">🛠️ Tools </p>
 
-<p align="">
+<p align="center">
   <a href="">
     <img src="https://skillicons.dev/icons?i=vscode,github,git,gcp,netlify,docker,nodejs,flutter,figma,firebase" />
   </a>
