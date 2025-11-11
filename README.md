@@ -26,6 +26,7 @@ I'm a student passionate about computing stuffs and learning new things. Current
 ### <p align="center">🚀 Live Projects 🚀</p>
 <p align="center">Check out my deployed projects and applications!</p>
 
+[![](./projects-table.svg)](#)
 
 ---
 ### 📈 My Contribution Graph
