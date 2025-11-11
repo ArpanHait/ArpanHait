@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Projects</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: transparent;
+            color: #c9d1d9;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #161b22;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #30363d;
+        }
+        
+        th, td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #21262d;
+            border-right: 1px solid #21262d;
+        }
+        
+        th:last-child, td:last-child {
+            border-right: none;
+        }
+        
+        th {
+            background-color: #0d1117;
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 16px;
+            border-bottom: 2px solid #30363d;
+        }
+        
+        td {
+            color: #c9d1d9;
+            vertical-align: middle;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover {
+            background-color: #1c2128;
+        }
+        
+        .project-name {
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 15px;
+        }
+        
+        .tech-stack {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tech-badge {
+            background-color: #21262d;
+            color: #f85149;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+            border: 1px solid #30363d;
+        }
+        
+        .demo-cell {
+            text-align: center;
+        }
+        
+        .show-image-btn {
+            background-color: transparent;
+            color: #58a6ff;
+            border: 1px solid #30363d;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .show-image-btn:hover {
+            background-color: #1c2128;
+            border-color: #58a6ff;
+            color: #79c0ff;
+        }
+        
+        .demo-link {
+            background: linear-gradient(90deg, #238636 0%, #2ea043 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+        
+        .demo-link:hover {
+            background: linear-gradient(90deg, #2ea043 0%, #238636 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(35, 134, 54, 0.3);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            position: relative;
+            margin: 5% auto;
+            padding: 20px;
+            max-width: 90%;
+            max-height: 80%;
+        }
+        
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .close:hover {
+            color: #f85149;
+        }
+        
+        @media (max-width: 768px) {
+            th, td {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+            
+            .tech-badge {
+                font-size: 11px;
+                padding: 3px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Description</th>
+                    <th>Tech Stack</th>
+                    <th style="text-align: center;">Live Demo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="project-name">Project Name 1</td>
+                    <td>Brief description of your project</td>
+                    <td>
+                        <div class="tech-stack">
+                            <span class="tech-badge">React</span>
+                            <span class="tech-badge">Node.js</span>
+                            <span class="tech-badge">MongoDB</span>
+                        </div>
+                    </td>
+                    <td class="demo-cell">
+                        <a href="https://your-project-1-link.com" class="demo-link" target="_blank" rel="noopener noreferrer">🔗 Live Demo</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="project-name">Project Name 2</td>
+                    <td>Brief description of your project</td>
+                    <td>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">Flask</span>
+                            <span class="tech-badge">PostgreSQL</span>
+                        </div>
+                    </td>
+                    <td class="demo-cell">
+                        <a href="https://your-project-2-link.com" class="demo-link" target="_blank" rel="noopener noreferrer">🔗 Live Demo</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="project-name">Project Name 3</td>
+                    <td>Brief description of your project</td>
+                    <td>
+                        <div class="tech-stack">
+                            <span class="tech-badge">HTML</span>
+                            <span class="tech-badge">CSS</span>
+                            <span class="tech-badge">JavaScript</span>
+                        </div>
+                    </td>
+                    <td class="demo-cell">
+                        <a href="https://your-project-3-link.com" class="demo-link" target="_blank" rel="noopener noreferrer">🔗 Live Demo</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="project-name">Project Name 4</td>
+                    <td>Brief description of your project</td>
+                    <td>
+                        <div class="tech-stack">
+                            <span class="tech-badge">Flutter</span>
+                            <span class="tech-badge">Firebase</span>
+                        </div>
+                    </td>
+                    <td class="demo-cell">
+                        <a href="https://your-project-4-link.com" class="demo-link" target="_blank" rel="noopener noreferrer">🔗 Live Demo</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal for displaying images -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="Project Screenshot">
+        </div>
+    </div>
