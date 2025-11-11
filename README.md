@@ -25,7 +25,9 @@ I'm a student passionate about computing stuffs and learning new things. Current
 ##
 ### <p align="center">🚀 Live Projects 🚀</p>
 <p align="center">Check out my deployed projects and applications!</p>
-
+<p align="center">
+  <img src="https://ArpanHait.github.io/assets/projects-table.html" width="100%" />
+</p>
 
 ---
 ### 📈 My Contribution Graph
