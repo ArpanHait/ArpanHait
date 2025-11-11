@@ -22,6 +22,11 @@ I'm a student passionate about computing stuffs and learning new things. Current
 ### 📊 My GitHub Stats
 [![](./progress.svg)](#)
 
+##
+### <p align="center">🚀 Live Projects 🚀</p>
+<p align="center">Check out my deployed projects and applications!</p>
+
+
 ---
 ### 📈 My Contribution Graph
 <p align="center">
