@@ -23,7 +23,7 @@
                 table {
                     width: 100%;
                     border-collapse: collapse;
-                    background-color: #161b22;
+                    background-color: #000000ff;
                     border-radius: 6px;
                     overflow: hidden;
                     border: 1px solid #30363d;
@@ -74,7 +74,6 @@
                     justify-content: center;
                 }
                 
-                /* This is your tech-badge style */
                 .tech-badge {
                     background-color: #21262d;
                     color: #f85149;
@@ -137,7 +136,7 @@
                         <tr>
                             <td class="project-name">Autocorrect Tool</td>
                             <td class="details-cell">
-                                <a href="https://github.com/arpanhait/Project-Name-1/blob/main/README.md" class="readme-link" target="_blank" rel="noopener noreferrer">View README</a>
+                                <a href="https://github.com/ArpanHait/AUTOCORRECT_TOOL/blob/master/README.md" class="readme-link" target="_blank" rel="noopener noreferrer">View README</a>
                             </td>
                             <td>
                                 <div class="tech-stack">
@@ -148,11 +147,11 @@
                                 </div>
                             </td>
                             <td class="demo-cell">
-                                <a href="https://your-project-1-link.com" class="demo-link" target="_blank" rel="noopener noreferrer">🔗 Live Demo</a>
+                                <a href="https://arpcorrect.netlify.app" class="demo-link" target="_blank" rel="noopener noreferrer">🔗 Live Demo</a>
                             </td>
                         </tr>
                         <tr>
-                            <td class="project-name">Project Name 2</td>
+                            <td class="project-name">Working..</td>
                             <td class="details-cell">
                                 <a href="https://github.com/arpanhait/Project-Name-2/blob/main/README.md" class="readme-link" target="_blank" rel="noopener noreferrer">View README</a>
                             </td>
