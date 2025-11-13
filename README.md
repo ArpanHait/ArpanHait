@@ -1,12 +1,14 @@
-
-##
 <div align="center">
-<a href="https://github.com/ArpanHait">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Space+Mono&weight=700&size=25&center=true&vCenter=true&width=435&lines=Hi+there%2C+I'm+Arpan+Hait!;I'm+a+Web+Developer;I+love+Open+Source;Welcome+to+my+profile!" alt="Typing SVG">
-</a>
+
+  <img src="https://user-images.githubusercontent.com/74038190/213866269-5d00981c-7c98-46d7-8a8e-16f462f15227.gif" width="150" valign="middle" /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/ArpanHait">
+    <img src="https://readme-typing-svg.herokuapp.com?font=Space+Mono&weight=700&size=25&center=true&vCenter=true&width=435&lines=Hi+there%2C+I'm+Arpan+Hait!;I'm+a+Web+Developer;I+love+Open+Source;AI+/+ML+Enthusiast;Welcome+to+my+profile!" alt="Typing SVG">
+  </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="https://user-images.githubusercontent.com/74038190/213866269-5d00981c-7c98-46d7-8a8e-16f462f15227.gif" width="150" valign="middle" />
+
 </div>
 
-I'm a student passionate about computing stuffs and learning new things. Currently increasing my knowledge by learning more languages while working on some small projects & contributing to open source community.
+---
+
+<p align="center">🎗️I am a student passionate about the intersection of software development and artificial intelligence. My focus is on learning and applying🎗️ AI/ML concepts, with a particular fascination for the development of AI agents. I am actively expanding my skills through personal projects and as an enthusiastic contributor to the open-source community.</p>
 
 ## <p align="center">⚙️ Languages & Tools ⚙️</p>
 
