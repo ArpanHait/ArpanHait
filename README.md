@@ -1,4 +1,10 @@
-## Hey there [<img src="https://raw.githubusercontent.com/ABSphreak/ABSphreak/master/gifs/moving.gif" width="30px">](#) 
+
+##
+<div align="center">
+<a href="https://github.com/ArpanHait">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Space+Mono&weight=700&size=25&center=true&vCenter=true&width=435&lines=Hi+there%2C+I'm+Arpan+Hait!;I'm+a+Web+Developer;I+love+Open+Source;Welcome+to+my+profile!" alt="Typing SVG">
+</a>
+</div>
 
 I'm a student passionate about computing stuffs and learning new things. Currently increasing my knowledge by learning more languages while working on some small projects & contributing to open source community.
 
