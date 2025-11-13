@@ -26,7 +26,14 @@ I'm a student passionate about computing stuffs and learning new things. Current
 ### <p align="center">🚀 Live Projects 🚀</p>
 <p align="center">Check out my deployed projects and applications!</p>
 
-[![](./projects-table.svg)](#)
+<div align="center">
+  
+| Project | Details | Tech Stack | Live Demo |
+|---------|---------|------------|-----------|
+| **Autocorrect Tool** | [View README](https://github.com/ArpanHait/AUTOCORRECT_TOOL/blob/master/README.md) | `HTML` `CSS` `JavaScript` `API` | [🔗 Live Demo](https://arpcorrect.netlify.app) |
+| **Working..** | [View README](https://github.com/arpanhait/Project-Name-2/blob/main/README.md) | `Python` `Flask` `PostgreSQL` | [🔗 Live Demo](https://your-project-2-link.com) |
+
+</div>
 
 ---
 ### 📈 My Contribution Graph
