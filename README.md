@@ -8,7 +8,7 @@
 
 ---
 
-<p align="center">🎗️I am a student passionate about the intersection of software development and artificial intelligence. My focus is on learning and applying🎗️ AI/ML concepts, with a particular fascination for the development of AI agents. I am actively expanding my skills through personal projects and as an enthusiastic contributor to the open-source community.</p>
+<p align="center">🎗️ I am a student passionate about the intersection of software development and artificial intelligence. My focus is on learning and applying AI/ML concepts, with a particular fascination for the development of AI agents. I am actively expanding my skills through personal projects and as an enthusiastic contributor to the open-source community.</p>
 
 ## <p align="center">⚙️ Languages & Tools ⚙️</p>
 
