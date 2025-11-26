@@ -39,7 +39,8 @@
 | Project | Details | Tech Stack | Live Demo |
 |---------|---------|------------|-----------|
 | **Autocorrect Tool** | [View README](https://github.com/ArpanHait/AUTOCORRECT_TOOL/blob/master/README.md) | `HTML` `CSS` `JavaScript` `API` | [🔗 Live Demo](https://arpcorrect.netlify.app) |
-| **Working..** | [View README](https://github.com/arpanhait/Project-Name-2/blob/main/README.md) | `Python` `Flask` `PostgreSQL` | [🔗 Live Demo](https://your-project-2-link.com) |
+| **AI Agentic RAG** | [View README](https://github.com/ArpanHait/AGENTIC_RAG/blob/main/README.md) | `Python` `API` `Streamlit` | [🔗 Live Demo](https://ragagentic.streamlit.app/) |
+| **Working..** | [View README](https://github.com/arpanhait/Project-Name-2/blob/main/README.md) | `Python` `Flask` `Sql` | [🔗 Live Demo](https://ragagentic.streamlit.app/) | 
 
 </div>
 
