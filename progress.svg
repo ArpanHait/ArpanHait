@@ -1,6 +1,304 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="940" height="700" class="">
+<svg xmlns="http://www.w3.org/2000/svg" width="950" height="760" class="">
 
-    <style>@keyframes animation-gauge{0%{stroke-dasharray:0 329}}@keyframes animation-rainbow{0%,to{color:#7f00ff;fill:#7f00ff}14%{color:#a933ff;fill:#a933ff}29%{color:#007fff;fill:#007fff}43%{color:#00ff7f;fill:#00ff7f}57%{color:#ff0;fill:#ff0}71%{color:#ff7f00;fill:#ff7f00}86%{color:red;fill:red}}svg{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;color:#777}h2,h3{margin:8px 0 2px;padding:0;color:#0366d6;font-weight:400}.gauge text,h2 svg,h3 svg{fill:currentColor}h2{font-size:16px}h3,svg{font-size:14px}section&gt;.field{margin-left:5px;margin-right:5px}.field{display:flex;align-items:center;margin-bottom:2px;white-space:nowrap}.field.wrap,.row{flex-wrap:wrap}.field svg{margin:0 8px;fill:#959da5;flex-shrink:0}.field.error{color:#cb2431}.field.error svg{fill:#cb2431}.row{display:flex}.row section{flex:1 1 0}.column{display:flex;flex-direction:column;align-items:center}.center{justify-content:center}.horizontal-wrap{flex-wrap:wrap}.no-wrap{white-space:nowrap}.fill-width{width:100%}.avatar{border-radius:50%;margin:0 6px}.calendar.field{margin:4px 0 4px 7px}.calendar .day{outline:1px solid rgba(27,31,35,.04);outline-offset:-1px}svg.bar{margin:4px 0}.field.language{margin:0 8px;flex-grow:0}.gauge{stroke-linecap:round;fill:none}.achievement .gauge.info,.gauge.info{color:#58a6ff}.gauge-arc,.gauge-base{stroke:currentColor;stroke-width:10}.gauge-base{stroke-opacity:.2}.gauge-arc{fill:none;stroke-dashoffset:0;animation-delay:250ms;animation:animation-gauge 1s ease forwards}.gauge text{font-size:40px;font-family:monospace;text-anchor:middle;font-weight:600}.gauge .title{font-size:18px;color:#777}svg.calendar{margin-left:13px;margin-top:4px}svg.calendar text{font-size:18px;fill:currentColor}.added{color:#3fb950}.people{padding:0 10px}.people .avatar{margin:0 2px}.achievement{display:flex;margin:4px 0}.achievement .icon{margin:0 4px;width:44px;height:44px}.achievement .text{font-size:12px;color:#666}.achievement .title{font-size:14px;color:#58a6ff}.achievement .value{background-color:#58a6ff26}.achievement.x .title{color:#666}.achievement.x .gauge.info{color:#b0b0b0}.achievement.x .value{background-color:#b0b0b026}.achievement.b .title{color:#9d8fff}.achievement.b .gauge.info{color:#9e91ff}.achievement.b .value{background-color:#9e91ff26}.achievement.a .title{color:#d79533}.achievement.a .gauge.info{color:#e7bd69}.achievement.a .value{background-color:#e7bd6926}.achievement.s .gauge.info,.achievement.s .title{color:#eb355e}.achievement.s .value{background-color:#eb355e26}.achievement.secret .title{color:#ff76cd}.achievement.secret .gauge.info{color:#ff79d1}.achievement.secret .value{background-color:#ff79d126}.achievement .gh,.achievement .value{border:1px solid currentColor;border-radius:16px;font-size:10px;padding:0 5px;white-space:nowrap}.achievement .gauge-arc,.achievement .gauge-base{stroke-width:6}.achievement .value-wrapper{margin-bottom:-50px;margin-top:36px;display:none}.achievement .value{margin-left:46px}.achievements.compact{display:flex;flex-wrap:wrap}.achievements.compact .achievement{flex-direction:column-reverse;align-items:center;width:80px}#metrics-end,.achievements.compact .info{width:100%}.achievements.compact .achievement .title{margin-bottom:2px;text-transform:capitalize;text-align:center}.achievements.compact .achievement .title .prefix{min-height:13px;font-size:10px;display:block;margin-bottom:-.25rem}.achievements.compact .achievement .value-wrapper{display:flex}.achievements.compact .achievement .gh,.achievements.compact .achievement .text{display:none}:root{--color-calendar-graph-day-bg:#ebedf0;--color-calendar-graph-day-border:rgba(27,31,35,0.06);--color-calendar-graph-day-L1-bg:#9be9a8;--color-calendar-graph-day-L2-bg:#40c463;--color-calendar-graph-day-L3-bg:#30a14e;--color-calendar-graph-day-L4-bg:#216e39;--color-calendar-halloween-graph-day-L1-bg:#ffee4a;--color-calendar-halloween-graph-day-L2-bg:#ffc501;--color-calendar-halloween-graph-day-L3-bg:#fe9600;--color-calendar-halloween-graph-day-L4-bg:#03001c;--color-calendar-winter-graph-day-L1-bg:#0a3069;--color-calendar-winter-graph-day-L2-bg:#0969da;--color-calendar-winter-graph-day-L3-bg:#54aeff;--color-calendar-winter-graph-day-L4-bg:#b6e3ff;--color-calendar-graph-day-L4-border:rgba(27,31,35,0.06);--color-calendar-graph-day-L3-border:rgba(27,31,35,0.06);--color-calendar-graph-day-L2-border:rgba(27,31,35,0.06);--color-calendar-graph-day-L1-border:rgba(27,31,35,0.06)}</style>
+<style>
+@keyframes animation-gauge {
+  0% {
+    stroke-dasharray:0 329
+  }
+}
+@keyframes animation-rainbow {
+  0%,to {
+    color:#7f00ff;
+    fill:#7f00ff
+  }
+  14% {
+    color:#a933ff;
+    fill:#a933ff
+  }
+  29% {
+    color:#007fff;
+    fill:#007fff
+  }
+  43% {
+    color:#00ff7f;
+    fill:#00ff7f
+  }
+  57% {
+    color:#ff0;
+    fill:#ff0
+  }
+  71% {
+    color:#ff7f00;
+    fill:#ff7f00
+  }
+  86% {
+    color:red;
+    fill:red
+  }
+}
+svg {
+  font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+  color:#777
+}
+h2,h3 {
+  margin:8px 0 2px;
+  padding:0;
+  color:#0366d6;
+  font-weight:400
+}
+.gauge text,h2 svg,h3 svg {
+  fill:currentColor
+}
+h2 {
+  font-size:16px
+}
+h3,svg {
+  font-size:14px
+}
+section&gt;.field {
+  margin-left:5px;
+  margin-right:5px
+}
+.field {
+  display:flex;
+  align-items:center;
+  margin-bottom:2px;
+  white-space:nowrap;
+  font-size:16px
+}
+.field.wrap,.row {
+  flex-wrap:wrap
+}
+.field svg {
+  margin:0 8px;
+  fill:#959da5;
+  flex-shrink:0
+}
+.field.error {
+  color:#cb2431
+}
+.field.error svg {
+  fill:#cb2431
+}
+.row {
+  display:flex
+}
+.row section {
+  flex:1 1 0
+}
+.column {
+  display:flex;
+  flex-direction:column;
+  align-items:center
+}
+.center {
+  justify-content:center
+}
+.horizontal-wrap {
+  flex-wrap:wrap
+}
+.no-wrap {
+  white-space:nowrap
+}
+.fill-width {
+  width:100%
+}
+.avatar {
+  border-radius:50%;
+  margin:0 6px
+}
+.calendar.field {
+  margin:4px 0 4px 7px
+}
+.calendar .day {
+  outline:1px solid rgba(27,31,35,.04);
+  outline-offset:-1px
+}
+svg.bar {
+  margin:4px 0
+}
+.field.language {
+  margin:0 8px;
+  flex-grow:0
+}
+.gauge {
+  stroke-linecap:round;
+  fill:none
+}
+.achievement .gauge.info,.gauge.info {
+  color:#58a6ff
+}
+.gauge-arc,.gauge-base {
+  stroke:currentColor;
+  stroke-width:10
+}
+.gauge-base {
+  stroke-opacity:.2
+}
+.gauge-arc {
+  fill:none;
+  stroke-dashoffset:0;
+  animation-delay:250ms;
+  animation:animation-gauge 1s ease forwards
+}
+.gauge text {
+  font-size:40px;
+  font-family:monospace;
+  text-anchor:middle;
+  font-weight:600
+}
+.gauge .title {
+  font-size:18px;
+  color:#777
+}
+svg.calendar {
+  margin-left:13px;
+  margin-top:4px
+}
+svg.calendar text {
+  font-size:18px;
+  fill:currentColor
+}
+.added {
+  color:#3fb950
+}
+.people {
+  padding:0 10px
+}
+.people .avatar {
+  margin:0 2px
+}
+.achievement {
+  display:flex;
+  margin:4px 0
+}
+.achievement .icon {
+  margin:0 4px;
+  width:44px;
+  height:44px
+}
+.achievement .text {
+  font-size:12px;
+  color:#666
+}
+.achievement .title {
+  font-size:14px;
+  color:#58a6ff
+}
+.achievement .value {
+  background-color:#58a6ff26
+}
+.achievement.x .title {
+  color:#666
+}
+.achievement.x .gauge.info {
+  color:#b0b0b0
+}
+.achievement.x .value {
+  background-color:#b0b0b026
+}
+.achievement.b .title {
+  color:#9d8fff
+}
+.achievement.b .gauge.info {
+  color:#9e91ff
+}
+.achievement.b .value {
+  background-color:#9e91ff26
+}
+.achievement.a .title {
+  color:#d79533
+}
+.achievement.a .gauge.info {
+  color:#e7bd69
+}
+.achievement.a .value {
+  background-color:#e7bd6926
+}
+.achievement.s .gauge.info,.achievement.s .title {
+  color:#eb355e
+}
+.achievement.s .value {
+  background-color:#eb355e26
+}
+.achievement.secret .title {
+  color:#ff76cd
+}
+.achievement.secret .gauge.info {
+  color:#ff79d1
+}
+.achievement.secret .value {
+  background-color:#ff79d126
+}
+.achievement .gh,.achievement .value {
+  border:1px solid currentColor;
+  border-radius:16px;
+  font-size:10px;
+  padding:0px 4px;
+  white-space:nowrap
+}
+.achievement .gauge-arc,.achievement .gauge-base {
+  stroke-width:6
+}
+.achievement .value-wrapper {
+  margin-bottom:-50px;
+  margin-top:36px;
+  margin-left:17px;
+  display:none
+}
+.achievement .value {
+  margin-left:46px
+}
+.achievements.compact {
+  display:flex;
+  flex-wrap:wrap
+}
+.achievements.compact .achievement {
+  flex-direction:column-reverse;
+  align-items:center;
+  width:80px
+}
+#metrics-end,.achievements.compact .info {
+  width:100%
+}
+.achievements.compact .achievement .title {
+  margin-bottom:2px;
+  text-transform:capitalize;
+  text-align:center
+}
+.achievements.compact .achievement .title .prefix {
+  min-height:13px;
+  font-size:10px;
+  display:block;
+  margin-bottom:-.25rem
+}
+.achievements.compact .achievement .value-wrapper {
+  display:flex
+}
+.achievements.compact .achievement .gh,.achievements.compact .achievement .text {
+  display:none
+}
+:root {
+  --color-calendar-graph-day-bg:#ebedf0;
+  --color-calendar-graph-day-border:rgba(27,31,35,0.06);
+  --color-calendar-graph-day-L1-bg:#9be9a8;
+  --color-calendar-graph-day-L2-bg:#40c463;
+  --color-calendar-graph-day-L3-bg:#30a14e;
+  --color-calendar-graph-day-L4-bg:#216e39;
+  --color-calendar-halloween-graph-day-L1-bg:#ffee4a;
+  --color-calendar-halloween-graph-day-L2-bg:#ffc501;
+  --color-calendar-halloween-graph-day-L3-bg:#fe9600;
+  --color-calendar-halloween-graph-day-L4-bg:#03001c;
+  --color-calendar-winter-graph-day-L1-bg:#0a3069;
+  --color-calendar-winter-graph-day-L2-bg:#0969da;
+  --color-calendar-winter-graph-day-L3-bg:#54aeff;
+  --color-calendar-winter-graph-day-L4-bg:#b6e3ff;
+  --color-calendar-graph-day-L4-border:rgba(27,31,35,0.06);
+  --color-calendar-graph-day-L3-border:rgba(27,31,35,0.06);
+  --color-calendar-graph-day-L2-border:rgba(27,31,35,0.06);
+  --color-calendar-graph-day-L1-border:rgba(27,31,35,0.06)
+}
+</style>
     
     <style>
       .row.center section { flex-grow: 0; margin: 10px 45px; }
@@ -11,8 +309,10 @@
       .achievement.super-member .gauge.info, .achievement.super-member .title { color: #ffbd5aff; }
       .achievement.great-devoloper .gauge.info, .achievement.sgreat-devoloper .title { color: #4524ffff; }
       .achievement.automator .gauge.info, .achievement.automator .title { color: #ff89f3ff; } 
+     
+      h2.field.center { margin-bottom: 10px; }
     </style>
-    <!-- <style>.row.center section{flex-grow:0;margin:10px 45px}</style> -->
+ 
     <foreignObject x="0" y="0" width="100%" height="100%">
         <div xmlns="http://www.w3.org/1999/xhtml" class="items-wrapper">
             <section class="largeable largeable-inline-flex">
@@ -185,7 +485,7 @@
                             <path fill-rule="evenodd" d="M8.001 2a6 6 0 00-5.21 9.254l-.895.9A.75.75 0 002.96 13.2l.895-.9A5.972 5.972 0 008.001 14a6 6 0 005.21-9.254l.895-.9a.75.75 0 10-1.062-1.062l-.895.9A5.972 5.972 0 008.001 2zM7.25 4a.75.75 0 01.75-.75h2a.75.75 0 01.75.75v4.5a.75.75 0 01-.75.75h-2a.75.75 0 01-.75-.75V4z"></path></svg>
                           Mostly used tools
                           </h2>
-                         <div class="row center horizontal-wrap">
+                         <div class="row horizontal-wrap">
                           <div class="field">
                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
                          <path d="M14.33 3.134L8.43 0l-.022.016L2.52 3.134a.834.834 0 00-.44.725v8.282c0 .32.18.613.465.758l5.908 3.016.022-.016 5.908-3.016a.834.834 0 00.465-.758V3.859a.834.834 0 00-.44-.725zM8.012 1.11L13.08 3.86l-5.068 2.89L2.944 3.86l5.068-2.75zm.002 13.78L2.94 12.14l5.07-2.89 5.07 2.89-5.072 2.75zM3.75 4.51l4.25 2.42v5.12L3.75 9.63V4.51zm8.5 5.12l-4.25 2.42V6.93l4.25-2.42v5.12z"></path></svg>
@@ -431,6 +731,7 @@
                     </svg>
                     ⇏
                 </h2>
+
                 <div class="row">
                     <section class="achievements compact largeable-flex-wrap center">
 
@@ -438,7 +739,7 @@
                         <div class="achievement s largeable-width-half master-deployer" >
                         
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="44" width="44">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="55" width="55">
                                     <defs>
                                         <mask id="mask">
                                             <circle class="gauge-base" r="25" cx="28" cy="28" fill="white"/>
@@ -479,7 +780,7 @@
                         </div>
                         <div class="achievement s largeable-width-half master-worker" >
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="44" width="44">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="55" width="55">
                                     <defs>
                                         <mask id="mask">
                                             <circle class="gauge-base" r="25" cx="28" cy="28" fill="white"/>
@@ -515,7 +816,7 @@
                         </div>
                         <div class="achievement s largeable-width-half master-forker" >
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="44" width="44">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="55" width="55">
                                     <defs>
                                         <mask id="mask">
                                             <circle class="gauge-base" r="25" cx="28" cy="28" fill="white"/>
@@ -557,7 +858,7 @@
                         </div>
                         <div class="achievement a largeable-width-half super-polyglot" >
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="44" width="44">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="55" width="55">
                                     <defs>
                                         <mask id="mask">
                                             <circle class="gauge-base" r="25" cx="28" cy="28" fill="white"/>
@@ -592,7 +893,7 @@
                         </div>
                         <div class="achievement a largeable-width-half super-member" >
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="44" width="44">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="55" width="55">
                                     <defs>
                                         <mask id="mask">
                                             <circle class="gauge-base" r="25" cx="28" cy="28" fill="white"/>
@@ -631,7 +932,7 @@
                         </div>
                         <div class="achievement b largeable-width-half great-devoloper" >
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="44" width="44">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="55" width="55">
                                     <defs>
                                         <mask id="mask">
                                             <circle class="gauge-base" r="25" cx="28" cy="28" fill="white"/>
@@ -674,7 +975,7 @@
                         </div>
                         <div class="achievement secret largeable-width-half automator" >
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="44" width="44">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="55" width="55">
                                     <defs>
                                         <mask id="mask">
                                             <circle class="gauge-base" r="25" cx="28" cy="28" fill="white"/>
@@ -682,7 +983,7 @@
                                     </defs>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="gauge info">
                                         <circle class="gauge-base" r="25" cx="28" cy="28"/>
-                                        <circle class="gauge-arc" transform="rotate(-90 28 28)" r="25" cx="28" cy="28" stroke-dasharray="120 155"/>
+                                        <circle class="gauge-arc" transform="rotate(-90 28 28)" r="25" cx="28" cy="28" stroke-dasharray="110 155"/>
                                     </svg>
                                     <svg xmlns="http://www.w3.org/2000/svg" mask="url(#mask)">
                                         <g transform="translate(4 5)" stroke-width="2" fill="none" fill-rule="evenodd">
@@ -711,7 +1012,7 @@
                                     <span class="prefix"></span>
                                     Automator
                                     <div class="value-wrapper">
-                                        <div class="value">⁂</div>
+                                        <div class="value">70 %</div>
                                     </div>
                                 </div>
                                 <div class="text">Use GitHub Actions to automate profile updates</div>
