@@ -62,7 +62,7 @@
   <a href="https://discord.com/users/taplu_g">
     <img src="https://img.shields.io/badge/Discord-E8E8E8?style=for-the-badge&logo=discord&logoColor=5865F2" alt="Discord" />
   </a>
-  <a href="https://#YOUR-INSTAGRAM-LINK">
+  <a href="https://www.instagram.com/arp.anhait">
     <img src="https://img.shields.io/badge/Instagram-F7B93E?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram" />
   </a>
   <a href="arpanhait2006@gmail.com">
