@@ -50,6 +50,13 @@
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=arpanhait&theme=react-dark&hide_border=true&area=true" alt="Contribution Graph">
 </p>
 
+## 
+
+### 🖥️ Hacktoberfest Stats
+
+[![An image of @arpanhait's Holopin badges, which is a link to view their full Holopin profile](https://holopin.me/arpanhait)](https://holopin.io/@arpanhait)
+
+
 ## <p align="center">🔗 Connect with me </p>
 
 <p align="center">
