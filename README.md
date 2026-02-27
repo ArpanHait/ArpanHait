@@ -74,7 +74,7 @@
   <a href="arpanhait2006@gmail.com">
     <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail" />
   </a>
-  <a href="https://https://x.com/arpa_nhait">
+  <a href="https://x.com/arpa_nhait">
     <img src="https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white" alt="Twitter" />
   </a>
   <a href="https://#YOUR-PORTFOLIO-LINK">
