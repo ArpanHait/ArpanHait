@@ -112,8 +112,8 @@ def main():
             best_streak = max_streak
 
         # Add historical offset to commits
-        commits += 800
-
+        commits += 300
+        
         # 2. Fetch User basic info
         print("Fetching basic user info...")
         user_response = requests.get(f"https://api.github.com/users/{USERNAME}", headers=headers)
