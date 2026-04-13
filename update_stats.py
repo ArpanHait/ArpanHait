@@ -1,6 +1,7 @@
 import os
 import requests
 import sys
+from datetime import datetime
 
 USERNAME = "ArpanHait"
 TOKEN = os.getenv("METRICS_TOKEN")
@@ -48,6 +49,9 @@ def main():
         pr_opened = 0
         issues = 0
         comments = 0
+        
+        # Dictionary to track commits by date for streaks and averages
+        commits_per_day = {}
 
         for page in range(1, 4):
             events_url = f"https://api.github.com/users/{USERNAME}/events?per_page=100&page={page}"
@@ -67,7 +71,14 @@ def main():
                 payload = event.get("payload", {})
                 
                 if event_type == "PushEvent":
-                    commits += len(payload.get("commits", []))
+                    commit_count = len(payload.get("commits", []))
+                    commits += commit_count
+                    
+                    # Track dates for streaks and averages
+                    date_str = event.get("created_at", "")[:10]
+                    if date_str:
+                        commits_per_day[date_str] = commits_per_day.get(date_str, 0) + commit_count
+                        
                 elif event_type == "PullRequestReviewEvent":
                     pr_reviews += 1
                 elif event_type == "PullRequestEvent" and payload.get("action") == "opened":
@@ -76,8 +87,31 @@ def main():
                     issues += 1
                 elif event_type in ["IssueCommentEvent", "CommitCommentEvent", "PullRequestReviewCommentEvent"] and payload.get("action") == "created":
                     comments += 1
-        
-        # Add historical offset to commits (Restored to 800 based on your original SVG)
+
+        # Calculate Streak, Highest, and Average based on recent events
+        best_streak = 0
+        highest_day = 0
+        average_day = "0.00"
+
+        if commits_per_day:
+            highest_day = max(commits_per_day.values())
+            avg = sum(commits_per_day.values()) / len(commits_per_day)
+            average_day = f"{avg:.2f}"
+            
+            sorted_dates = sorted(commits_per_day.keys())
+            current_streak = 1
+            max_streak = 1
+            for i in range(1, len(sorted_dates)):
+                d1 = datetime.strptime(sorted_dates[i-1], "%Y-%m-%d")
+                d2 = datetime.strptime(sorted_dates[i], "%Y-%m-%d")
+                if (d2 - d1).days == 1:
+                    current_streak += 1
+                    max_streak = max(max_streak, current_streak)
+                else:
+                    current_streak = 1
+            best_streak = max_streak
+
+        # Add historical offset to commits
         commits += 800
 
         # 2. Fetch User basic info
@@ -104,11 +138,12 @@ def main():
         print("Fetching watched repos...")
         watching = fetch_paginated_count(f"https://api.github.com/users/{USERNAME}/subscriptions")
 
-        # 6. Fetch Repos for total stargazers and watchers receiving
+        # 6. Fetch Repos for total stargazers, watchers, and forks
         print("Fetching repo stats...")
         stargazers = 0
         total_watchers = 0
         forks = 0
+        forked_by_me = 0
         repo_page = 1
         while True:
             repos_response = requests.get(f"https://api.github.com/users/{USERNAME}/repos?per_page=100&page={repo_page}", headers=headers)
@@ -125,18 +160,21 @@ def main():
                 stargazers += repo.get("stargazers_count", 0)
                 total_watchers += repo.get("watchers_count", 0)
                 forks += repo.get("forks_count", 0)
+                if repo.get("fork") == True:
+                    forked_by_me += 1
                 
             if len(repos) < 100:
                 break
             repo_page += 1
 
-        # Read progress.svg
-        svg_filename = "progress.svg"
-        if not os.path.exists(svg_filename):
-            print(f"❌ Error: {svg_filename} does not exist in the current directory.")
+        # Read progress_template.svg
+        template_filename = "progress_template.svg"
+        output_filename = "progress.svg"
+        if not os.path.exists(template_filename):
+            print(f"❌ Error: {template_filename} does not exist in the current directory.")
             sys.exit(1)
 
-        with open(svg_filename, "r", encoding="utf-8") as f:
+        with open(template_filename, "r", encoding="utf-8") as f:
             svg_content = f.read()
 
         # Replace placeholders
@@ -153,16 +191,20 @@ def main():
             "{{STARGAZERS}}": str(stargazers),
             "{{TOTAL_WATCHERS}}": str(total_watchers),
             "{{FORKS}}": str(forks),
+            "{{FORKED_BY_ME}}": str(forked_by_me),
+            "{{BEST_STREAK}}": str(best_streak),
+            "{{HIGHEST_DAY}}": str(highest_day),
+            "{{AVERAGE_DAY}}": str(average_day),
         }
 
         for placeholder, value in replacements.items():
             svg_content = svg_content.replace(placeholder, value)
 
         # Save the updated svg
-        with open(svg_filename, "w", encoding="utf-8") as f:
+        with open(output_filename, "w", encoding="utf-8") as f:
             f.write(svg_content)
             
-        print(f"✅ Successfully updated {svg_filename} with new stats.")
+        print(f"✅ Successfully updated {output_filename} with new stats.")
         print("Gathered Data:", replacements)
 
     except Exception as e:
