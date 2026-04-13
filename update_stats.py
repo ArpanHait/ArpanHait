@@ -81,6 +81,7 @@ def main():
         # 6. Fetch Repos for total stargazers and watchers receiving
         stargazers = 0
         total_watchers = 0
+        forks = 0
         repo_page = 1
         while True:
             repos_response = requests.get(f"https://api.github.com/users/{USERNAME}/repos?per_page=100&page={repo_page}", headers=headers)
@@ -93,6 +94,7 @@ def main():
             for repo in repos:
                 stargazers += repo.get("stargazers_count", 0)
                 total_watchers += repo.get("watchers_count", 0)
+                forks += repo.get("forks_count", 0)
                 
             if len(repos) < 100:
                 break
@@ -120,6 +122,7 @@ def main():
             "{{WATCHING}}": str(watching),
             "{{STARGAZERS}}": str(stargazers),
             "{{TOTAL_WATCHERS}}": str(total_watchers),
+            "{{FORKS}}": str(forks),
         }
 
         for placeholder, value in replacements.items():
