@@ -1,7 +1,7 @@
 <div align="center">
 
   <img src="https://user-images.githubusercontent.com/74038190/213866269-5d00981c-7c98-46d7-8a8e-16f462f15227.gif" width="150" valign="middle" /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<a href="https://github.com/ArpanHait">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Space+Mono&weight=700&size=27&center=true&vCenter=true&width=470&lines=👋+Hi+there%2C+I'm+Arpan+Hait!;🖥️+I'm+a+Web+Developer;🤗+I+love+Open+Source+📡;🤖+AI+/+ML+Enthusiast;🙌+Welcome+to+my+profile!" alt="Typing SVG">
+    <img src="https://readme-typing-svg.herokuapp.com?font=Space+Mono&weight=700&size=27&center=true&vCenter=true&width=470&lines=👋+Hi+There%2C+I'm+Arpan+Hait!;🖥️+I'm+a+Web+Developer;⛓️‍💥+MERN+STACK+!+🔌;🤗+I+love+Open+Source+📡;🤖+AI+/+ML+Enthusiast;🙌+Welcome+to+my+profile!" alt="Typing SVG">
   </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://user-images.githubusercontent.com/74038190/213866269-5d00981c-7c98-46d7-8a8e-16f462f15227.gif" width="150" valign="middle" />
 
 </div>
@@ -58,6 +58,11 @@
 [![](https://holopin.me/arpanhait)](https://holopin.io/@arpanhait)
 
 ---
+
+<div align="center">
+  <img src="https://komarev.com/ghpvc/?username=ArpanHait&color=00ff00&label_color=1e1e1e&style=for-the-badge&label=VISITORS" />
+</div>
+
 ### <p align="center">🔗 Connect with me </p>
 
 <p align="center">
