@@ -1,7 +1,9 @@
 import os
 import requests
 import sys
-from datetime import datetime
+import calendar
+import time
+from datetime import datetime, date, timedelta
 
 USERNAME = "ArpanHait"
 TOKEN = os.getenv("METRICS_TOKEN")
@@ -16,6 +18,66 @@ if TOKEN:
     print("✅ Token successfully loaded from environment.")
 else:
     print("❌ WARNING: METRICS_TOKEN is missing or empty! GitHub will block this with a Rate Limit.")
+
+def format_large_number(num):
+    if num >= 1_000_000:
+        return f"{num / 1_000_000:.1f}M".replace('.0M', 'M')
+    elif num >= 1000:
+        return f"{num / 1000:.1f}k".replace('.0k', 'k')
+    return str(num)
+
+def fetch_lines_of_code():
+    additions = 0
+    deletions = 0
+    repo_page = 1
+    print("Fetching lines of code (this might take a while)...")
+    
+    while True:
+        repos_url = f"https://api.github.com/users/{USERNAME}/repos?per_page=100&page={repo_page}"
+        repos_response = requests.get(repos_url, headers=headers)
+        
+        if repos_response.status_code != 200:
+            print(f"❌ API ERROR on Repos (LOC): Status {repos_response.status_code}")
+            break
+            
+        repos = repos_response.json()
+        if not repos:
+            break
+            
+        for repo in repos:
+            if repo.get("fork") == True or repo.get("owner", {}).get("login") != USERNAME:
+                continue
+                
+            repo_name = repo.get("name")
+            stats_url = f"https://api.github.com/repos/{USERNAME}/{repo_name}/stats/contributors"
+            
+            try:
+                stats_response = requests.get(stats_url, headers=headers, timeout=10)
+                
+                # Check for 202 Accepted (GitHub background processing)
+                if stats_response.status_code == 202:
+                    time.sleep(2)
+                    stats_response = requests.get(stats_url, headers=headers, timeout=10)
+                    
+                if stats_response.status_code == 200:
+                    contributors = stats_response.json()
+                    if isinstance(contributors, list):
+                        for contributor in contributors:
+                            author = contributor.get("author", {})
+                            if author and author.get("login") == USERNAME:
+                                for week in contributor.get("weeks", []):
+                                    additions += week.get("a", 0)
+                                    deletions += week.get("d", 0)
+                else:
+                    print(f"⚠️ Could not fetch LOC for {repo_name}: Status {stats_response.status_code}")
+            except Exception as e:
+                print(f"⚠️ Exception fetching LOC for {repo_name}: {e}")
+                
+        if len(repos) < 100:
+            break
+        repo_page += 1
+        
+    return additions, deletions
 
 def fetch_paginated_count(url):
     count = 0
@@ -95,7 +157,7 @@ def fetch_language_stats():
     
     return {lang: 0 for lang in ['Python', 'JavaScript', 'TypeScript', 'Java', 'HTML', 'CSS', 'SQL']}
 
-def fetch_graphql_contributions():
+def fetch_graphql_contributions(prev_month_query):
     query = """
     query($username: String!) {
       user(login: $username) {
@@ -130,11 +192,10 @@ def fetch_graphql_contributions():
             total_contributions = calendar['totalContributions']
             
             # Active days logic
-            current_ym = datetime.now().strftime("%Y-%m")
             active_days = 0
             for week in calendar.get('weeks', []):
                 for day in week.get('contributionDays', []):
-                    if day.get('date', '').startswith(current_ym) and day.get('contributionCount', 0) > 0:
+                    if day.get('date', '').startswith(prev_month_query) and day.get('contributionCount', 0) > 0:
                         active_days += 1
                         
             return total_contributions, active_days
@@ -211,12 +272,20 @@ def main():
                     current_streak = 1
             best_streak = max_streak
 
+        # Calculate Month Name and Dates
+        today = date.today()
+        first_of_this_month = today.replace(day=1)
+        last_day_prev_month = first_of_this_month - timedelta(days=1)
+        
+        prev_month_name = last_day_prev_month.strftime("%B")  # e.g., "March"
+        prev_month_query = last_day_prev_month.strftime("%Y-%m")  # e.g., "2026-03"
+
         # --- APPLY GRAPHQL TOTAL TO COMMITS ---
         print("Fetching Heatmap Contributions (GraphQL)...")
-        heatmap_contributions, active_days = fetch_graphql_contributions()
+        heatmap_contributions, active_days = fetch_graphql_contributions(prev_month_query)
         
         # Overwrite the old event-based commits with the real heatmap data + your 300 offset
-        commits = heatmap_contributions + 300
+        commits = heatmap_contributions + 200
         
         # 2. Fetch User basic info
         print("Fetching basic user info...")
@@ -276,7 +345,12 @@ def main():
                 break
             repo_page += 1
 
-        # 7. Fetch Language Stats
+        # 7. Fetch Lines of Code
+        additions, deletions = fetch_lines_of_code()
+        fmt_additions = format_large_number(additions)
+        fmt_deletions = format_large_number(deletions)
+
+        # 8. Fetch Language Stats
         print("Fetching language stats...")
         lang_bytes = fetch_language_stats()
         
@@ -326,7 +400,10 @@ def main():
             "{{FORKED_BY_ME}}": str(forked_by_me),
             "{{BEST_STREAK}}": str(best_streak),
             "{{ACTIVE_DAYS}}": str(active_days),
+            "{{MONTH_NAME}}": prev_month_name,
             "{{TOTAL_REPOS}}": str(total_repos),  # --- NEW: Added the placeholder replacement ---
+            "{{LINES_ADDED}}": fmt_additions,
+            "{{LINES_REMOVED}}": fmt_deletions,
             "{{PY_WIDTH}}": str(py_width),
             "{{JS_X}}": str(js_x),
             "{{JS_WIDTH}}": str(js_width),
