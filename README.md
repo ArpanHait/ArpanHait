@@ -58,11 +58,6 @@
 [![](https://holopin.me/arpanhait)](https://holopin.io/@arpanhait)
 
 ---
-
-<div align="center">
-  <img src="https://komarev.com/ghpvc/?username=ArpanHait&color=00ff00&label_color=1e1e1e&style=for-the-badge&label=VISITORS" />
-</div>
-
 ### <p align="center">🔗 Connect with me </p>
 
 <p align="center">

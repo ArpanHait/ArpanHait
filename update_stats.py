@@ -39,6 +39,112 @@ def fetch_paginated_count(url):
         page += 1
     return count
 
+# --- GRAPHQL FUNCTION FOR HEATMAP CONTRIBUTIONS ---
+def fetch_language_stats():
+    query = """
+    query($username: String!) {
+      user(login: $username) {
+        repositories(first: 100, ownerAffiliations: OWNER, isFork: false) {
+          nodes {
+            languages(first: 10) {
+              edges {
+                size
+                node {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    """
+    variables = {"username": USERNAME}
+    
+    graphql_headers = {"Authorization": f"Bearer {TOKEN}"} if TOKEN else {}
+    
+    try:
+        response = requests.post(
+            "https://api.github.com/graphql",
+            json={"query": query, "variables": variables},
+            headers=graphql_headers
+        )
+        if response.status_code == 200:
+            data = response.json()
+            repos = data.get('data', {}).get('user', {}).get('repositories', {}).get('nodes', [])
+            
+            target_langs = {'Python', 'JavaScript', 'TypeScript', 'Java', 'HTML', 'CSS', 'SQL'}
+            lang_bytes = {lang: 0 for lang in target_langs}
+            
+            for repo in repos:
+                repo_langs = repo.get('languages') or {}
+                lang_edges = repo_langs.get('edges') or []
+                for edge in lang_edges:
+                    node = edge.get('node') or {}
+                    name = node.get('name')
+                    size = edge.get('size', 0)
+                    if name in target_langs:
+                        lang_bytes[name] += size
+                        
+            return lang_bytes
+        else:
+            print(f"❌ GraphQL Language API ERROR: Status {response.status_code}")
+            print(f"Details: {response.text}")
+    except Exception as e:
+        print(f"GraphQL Language Error: {e}")
+    
+    return {lang: 0 for lang in ['Python', 'JavaScript', 'TypeScript', 'Java', 'HTML', 'CSS', 'SQL']}
+
+def fetch_graphql_contributions():
+    query = """
+    query($username: String!) {
+      user(login: $username) {
+        contributionsCollection {
+          contributionCalendar {
+            totalContributions
+            weeks {
+              contributionDays {
+                contributionCount
+                date
+              }
+            }
+          }
+        }
+      }
+    }
+    """
+    variables = {"username": USERNAME}
+    
+    # GraphQL specifically requires "Bearer" instead of "token" for authentication
+    graphql_headers = {"Authorization": f"Bearer {TOKEN}"} if TOKEN else {}
+    
+    try:
+        response = requests.post(
+            "https://api.github.com/graphql",
+            json={"query": query, "variables": variables},
+            headers=graphql_headers
+        )
+        if response.status_code == 200:
+            data = response.json()
+            calendar = data['data']['user']['contributionsCollection']['contributionCalendar']
+            total_contributions = calendar['totalContributions']
+            
+            # Active days logic
+            current_ym = datetime.now().strftime("%Y-%m")
+            active_days = 0
+            for week in calendar.get('weeks', []):
+                for day in week.get('contributionDays', []):
+                    if day.get('date', '').startswith(current_ym) and day.get('contributionCount', 0) > 0:
+                        active_days += 1
+                        
+            return total_contributions, active_days
+        else:
+            print(f"❌ GraphQL API ERROR: Status {response.status_code}")
+            print(f"Details: {response.text}")
+    except Exception as e:
+        print(f"GraphQL Error: {e}")
+    return 0, 0
+
 def main():
     try:
         print("Fetching GitHub Stats...")
@@ -90,14 +196,8 @@ def main():
 
         # Calculate Streak, Highest, and Average based on recent events
         best_streak = 0
-        highest_day = 0
-        average_day = "0.00"
 
         if commits_per_day:
-            highest_day = max(commits_per_day.values())
-            avg = sum(commits_per_day.values()) / len(commits_per_day)
-            average_day = f"{avg:.2f}"
-            
             sorted_dates = sorted(commits_per_day.keys())
             current_streak = 1
             max_streak = 1
@@ -111,8 +211,12 @@ def main():
                     current_streak = 1
             best_streak = max_streak
 
-        # Add historical offset to commits
-        commits += 300
+        # --- APPLY GRAPHQL TOTAL TO COMMITS ---
+        print("Fetching Heatmap Contributions (GraphQL)...")
+        heatmap_contributions, active_days = fetch_graphql_contributions()
+        
+        # Overwrite the old event-based commits with the real heatmap data + your 300 offset
+        commits = heatmap_contributions + 300
         
         # 2. Fetch User basic info
         print("Fetching basic user info...")
@@ -138,13 +242,15 @@ def main():
         print("Fetching watched repos...")
         watching = fetch_paginated_count(f"https://api.github.com/users/{USERNAME}/subscriptions")
 
-        # 6. Fetch Repos for total stargazers, watchers, and forks
+        # 6. Fetch Repos for total stargazers, watchers, forks, and total repos
         print("Fetching repo stats...")
         stargazers = 0
         total_watchers = 0
         forks = 0
         forked_by_me = 0
+        total_repos = 0  # --- NEW: Variable to hold total repository count ---
         repo_page = 1
+        
         while True:
             repos_response = requests.get(f"https://api.github.com/users/{USERNAME}/repos?per_page=100&page={repo_page}", headers=headers)
             if repos_response.status_code != 200:
@@ -156,6 +262,9 @@ def main():
             if not repos:
                 break
             
+            # --- NEW: Add the number of repos on this page to the total ---
+            total_repos += len(repos)
+            
             for repo in repos:
                 stargazers += repo.get("stargazers_count", 0)
                 total_watchers += repo.get("watchers_count", 0)
@@ -166,6 +275,29 @@ def main():
             if len(repos) < 100:
                 break
             repo_page += 1
+
+        # 7. Fetch Language Stats
+        print("Fetching language stats...")
+        lang_bytes = fetch_language_stats()
+        
+        total_lang_bytes = sum(lang_bytes.values())
+        if total_lang_bytes == 0:
+            total_lang_bytes = 1 # Prevent division by zero
+            
+        py_width = round((lang_bytes.get('Python', 0) / total_lang_bytes) * 460, 1)
+        js_width = round((lang_bytes.get('JavaScript', 0) / total_lang_bytes) * 460, 1)
+        ts_width = round((lang_bytes.get('TypeScript', 0) / total_lang_bytes) * 460, 1)
+        java_width = round((lang_bytes.get('Java', 0) / total_lang_bytes) * 460, 1)
+        html_width = round((lang_bytes.get('HTML', 0) / total_lang_bytes) * 460, 1)
+        css_width = round((lang_bytes.get('CSS', 0) / total_lang_bytes) * 460, 1)
+        sql_width = round((lang_bytes.get('SQL', 0) / total_lang_bytes) * 460, 1)
+        
+        js_x = py_width
+        ts_x = round(js_x + js_width, 1)
+        java_x = round(ts_x + ts_width, 1)
+        html_x = round(java_x + java_width, 1)
+        css_x = round(html_x + html_width, 1)
+        sql_x = round(css_x + css_width, 1)
 
         # Read progress_template.svg
         template_filename = "progress_template.svg"
@@ -193,8 +325,21 @@ def main():
             "{{FORKS}}": str(forks),
             "{{FORKED_BY_ME}}": str(forked_by_me),
             "{{BEST_STREAK}}": str(best_streak),
-            "{{HIGHEST_DAY}}": str(highest_day),
-            "{{AVERAGE_DAY}}": str(average_day),
+            "{{ACTIVE_DAYS}}": str(active_days),
+            "{{TOTAL_REPOS}}": str(total_repos),  # --- NEW: Added the placeholder replacement ---
+            "{{PY_WIDTH}}": str(py_width),
+            "{{JS_X}}": str(js_x),
+            "{{JS_WIDTH}}": str(js_width),
+            "{{TS_X}}": str(ts_x),
+            "{{TS_WIDTH}}": str(ts_width),
+            "{{JAVA_X}}": str(java_x),
+            "{{JAVA_WIDTH}}": str(java_width),
+            "{{HTML_X}}": str(html_x),
+            "{{HTML_WIDTH}}": str(html_width),
+            "{{CSS_X}}": str(css_x),
+            "{{CSS_WIDTH}}": str(css_width),
+            "{{SQL_X}}": str(sql_x),
+            "{{SQL_WIDTH}}": str(sql_width),
         }
 
         for placeholder, value in replacements.items():
