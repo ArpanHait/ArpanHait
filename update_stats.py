@@ -2,7 +2,6 @@ import os
 import requests
 import sys
 import calendar
-import time
 from datetime import datetime, date, timedelta
 
 USERNAME = "ArpanHait"
@@ -18,66 +17,6 @@ if TOKEN:
     print("✅ Token successfully loaded from environment.")
 else:
     print("❌ WARNING: METRICS_TOKEN is missing or empty! GitHub will block this with a Rate Limit.")
-
-def format_large_number(num):
-    if num >= 1_000_000:
-        return f"{num / 1_000_000:.1f}M".replace('.0M', 'M')
-    elif num >= 1000:
-        return f"{num / 1000:.1f}k".replace('.0k', 'k')
-    return str(num)
-
-def fetch_lines_of_code():
-    additions = 0
-    deletions = 0
-    repo_page = 1
-    print("Fetching lines of code (this might take a while)...")
-    
-    while True:
-        repos_url = f"https://api.github.com/users/{USERNAME}/repos?per_page=100&page={repo_page}"
-        repos_response = requests.get(repos_url, headers=headers)
-        
-        if repos_response.status_code != 200:
-            print(f"❌ API ERROR on Repos (LOC): Status {repos_response.status_code}")
-            break
-            
-        repos = repos_response.json()
-        if not repos:
-            break
-            
-        for repo in repos:
-            if repo.get("fork") == True or repo.get("owner", {}).get("login") != USERNAME:
-                continue
-                
-            repo_name = repo.get("name")
-            stats_url = f"https://api.github.com/repos/{USERNAME}/{repo_name}/stats/contributors"
-            
-            try:
-                stats_response = requests.get(stats_url, headers=headers, timeout=10)
-                
-                # Check for 202 Accepted (GitHub background processing)
-                if stats_response.status_code == 202:
-                    time.sleep(2)
-                    stats_response = requests.get(stats_url, headers=headers, timeout=10)
-                    
-                if stats_response.status_code == 200:
-                    contributors = stats_response.json()
-                    if isinstance(contributors, list):
-                        for contributor in contributors:
-                            author = contributor.get("author", {})
-                            if author and author.get("login") == USERNAME:
-                                for week in contributor.get("weeks", []):
-                                    additions += week.get("a", 0)
-                                    deletions += week.get("d", 0)
-                else:
-                    print(f"⚠️ Could not fetch LOC for {repo_name}: Status {stats_response.status_code}")
-            except Exception as e:
-                print(f"⚠️ Exception fetching LOC for {repo_name}: {e}")
-                
-        if len(repos) < 100:
-            break
-        repo_page += 1
-        
-    return additions, deletions
 
 def fetch_paginated_count(url):
     count = 0
@@ -345,12 +284,7 @@ def main():
                 break
             repo_page += 1
 
-        # 7. Fetch Lines of Code
-        additions, deletions = fetch_lines_of_code()
-        fmt_additions = format_large_number(additions)
-        fmt_deletions = format_large_number(deletions)
-
-        # 8. Fetch Language Stats
+        # 7. Fetch Language Stats
         print("Fetching language stats...")
         lang_bytes = fetch_language_stats()
         
@@ -402,8 +336,6 @@ def main():
             "{{ACTIVE_DAYS}}": str(active_days),
             "{{MONTH_NAME}}": prev_month_name,
             "{{TOTAL_REPOS}}": str(total_repos),  # --- NEW: Added the placeholder replacement ---
-            "{{LINES_ADDED}}": fmt_additions,
-            "{{LINES_REMOVED}}": fmt_deletions,
             "{{PY_WIDTH}}": str(py_width),
             "{{JS_X}}": str(js_x),
             "{{JS_WIDTH}}": str(js_width),
