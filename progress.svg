@@ -233,7 +233,7 @@ svg.calendar text {
 .achievement .gh,.achievement .value {
   border:1px solid currentColor;
   border-radius:16px;
-  font-size:10px;
+  font-size:11px;
   padding:0px 4px;
   white-space:nowrap
 }
@@ -241,13 +241,13 @@ svg.calendar text {
   stroke-width:6
 }
 .achievement .value-wrapper {
-  margin-bottom:-50px;
+  margin-bottom:-55px;
   margin-top:36px;
   margin-left:17px;
   display:none
 }
 .achievement .value {
-  margin-left:46px
+  margin-left:63px
 }
 .achievements.compact {
   display:flex;
@@ -256,14 +256,14 @@ svg.calendar text {
 .achievements.compact .achievement {
   flex-direction:column-reverse;
   align-items:center;
-  width:80px;
+  width:100px;
   margin: 7px;
 }
 #metrics-end,.achievements.compact .info {
   width:100%
 }
 .achievements.compact .achievement .title {
-  margin-bottom:4px;
+  margin-bottom:7px;
   text-transform:capitalize;
   text-align:center
 }
@@ -787,7 +787,7 @@ svg.calendar text {
                         <div class="achievement s largeable-width-half master-deployer" >
                         
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="55" width="55">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="64" width="64">
                                     <defs>
                                         <mask id="mask">
                                             <circle class="gauge-base" r="25" cx="28" cy="28" fill="white"/>
@@ -864,7 +864,7 @@ svg.calendar text {
                         </div> -->
                         <div class="achievement s largeable-width-half master-forker" >
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="55" width="55">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="64" width="64">
                                     <defs>
                                         <mask id="mask">
                                             <circle class="gauge-base" r="25" cx="28" cy="28" fill="white"/>
@@ -906,7 +906,7 @@ svg.calendar text {
                         </div>
                         <div class="achievement a largeable-width-half super-polyglot" >
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="55" width="55">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="64" width="64">
                                     <defs>
                                         <mask id="mask">
                                             <circle class="gauge-base" r="25" cx="28" cy="28" fill="white"/>
@@ -980,7 +980,7 @@ svg.calendar text {
                         </div> -->
                         <div class="achievement b largeable-width-half great-devoloper" >
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="55" width="55">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="64" width="64">
                                     <defs>
                                         <mask id="mask">
                                             <circle class="gauge-base" r="25" cx="28" cy="28" fill="white"/>
@@ -1023,7 +1023,7 @@ svg.calendar text {
                         </div>
                         <div class="achievement secret largeable-width-half automator" >
                             <div class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="55" width="55">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="64" width="64">
                                     <defs>
                                         <mask id="mask">
                                             <circle class="gauge-base" r="25" cx="28" cy="28" fill="white"/>
