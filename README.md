@@ -40,7 +40,7 @@
 |---------|---------|------------|-----------|
 | **Autocorrect Tool** | [View README](https://github.com/ArpanHait/AUTOCORRECT_TOOL/blob/master/README.md) | `HTML` `CSS` `JavaScript` `API` | [🔗 Live Demo](https://arpcorrect.netlify.app) |
 | **AI Agentic RAG** | [View README](https://github.com/ArpanHait/AGENTIC_RAG/blob/main/README.md) | `Python` `API` `Streamlit` | [🔗 Live Demo](https://arpanagent.streamlit.app/) |
-| **TO_DO Task Manager** | [View README](https://github.com/ArpanHait/TO_DO/blob/main/README.md) | `Python` `Django` `SQLite` `HTML` `CSS` `Javascript`  | [🔗 Live Demo](https://to-do-01m0.onrender.com) | 
+| **TO_DO Task Manager** | [View README](https://github.com/ArpanHait/TO_DO/blob/main/README.md) | `Python` `Django` `SQLite` `HTML` `CSS` `Javascript`  | [🔗 Live Demo](https://to-do-five-fawn-23.vercel.app/) | 
 | **DeepFake Detection** | [View README](https://github.com/ArpanHait/DEEPFAKE_DETECTION/blob/main/README.md) | `Pytorch` `CNN` `ReactJS` `Vite5` `TailwindCSS` | [🔗 Live Demo](https://detectarp.netlify.app/) | 
 | **AI Anomaly Detection** | [View README](https://github.com/ArpanHait/AI_ANOMALY_DETECTION) | `Next js` `FastAPI` `Python` `Typescript` `Scikit-Learn` | [🔗 Live Demo](https://coreinsight-nine.vercel.app/) | 
 
