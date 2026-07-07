@@ -26,6 +26,8 @@ def fetch_paginated_count(url):
         response = requests.get(f"{url}{sep}per_page=100&page={page}", headers=headers)
         
         # 2. LOUD ERROR REPORTING
+        if response.status_code == 204:
+            break
         if response.status_code != 200:
             print(f"❌ API ERROR on {url}: Status {response.status_code}")
             print(f"Details: {response.text}")
