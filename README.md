@@ -14,14 +14,14 @@
 
 <p align="center">
   <a href="">
-    <img src="https://skillicons.dev/icons?i=c,cpp,py,html,css,java,js" />
+    <img src="https://skillicons.dev/icons?i=c,cpp,py,html,css,tailwind,java,js,typescript,react,nextjs" />
   </a>
 </p>
 
 ##
 <p align="center">
   <a href="">
-    <img src="https://skillicons.dev/icons?i=vscode,github,git,gcp,netlify,docker,nodejs,flutter,figma,firebase" />
+    <img src="https://skillicons.dev/icons?i=vscode,github,git,gcp,netlify,docker,nodejs,flutter,figma,firebase,vite" />
   </a>
 </p>
 
