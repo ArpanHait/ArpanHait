@@ -132,20 +132,38 @@ def fetch_graphql_contributions(prev_month_query):
             calendar = data['data']['user']['contributionsCollection']['contributionCalendar']
             total_contributions = calendar['totalContributions']
             
-            # Active days logic
-            active_days = 0
+            # Monthly counts & full year streak logic
+            month_counts = []
+            all_days = []
             for week in calendar.get('weeks', []):
                 for day in week.get('contributionDays', []):
-                    if day.get('date', '').startswith(prev_month_query) and day.get('contributionCount', 0) > 0:
-                        active_days += 1
+                    d_date = day.get('date', '')
+                    count = day.get('contributionCount', 0)
+                    all_days.append((d_date, count))
+                    if d_date.startswith(prev_month_query):
+                        month_counts.append(count)
                         
-            return total_contributions, active_days
+            active_days = sum(1 for c in month_counts if c > 0)
+            highest_per_day = max(month_counts) if month_counts else 0
+            avg_per_day = round(sum(month_counts) / len(month_counts), 1) if month_counts else 0.0
+
+            # Calculate Best Streak across full year
+            best_streak = 0
+            current_streak = 0
+            for _, count in all_days:
+                if count > 0:
+                    current_streak += 1
+                    best_streak = max(best_streak, current_streak)
+                else:
+                    current_streak = 0
+                        
+            return total_contributions, active_days, highest_per_day, avg_per_day, best_streak
         else:
             print(f"❌ GraphQL API ERROR: Status {response.status_code}")
             print(f"Details: {response.text}")
     except Exception as e:
         print(f"GraphQL Error: {e}")
-    return 0, 0
+    return 0, 0, 0, 0.0, 0
 
 def main():
     try:
@@ -208,6 +226,7 @@ def main():
             pr_merged = 0
 
         # Calculate Streak, Highest, and Average based on recent events
+        active_days = 0
         best_streak = 0
         highest_per_day = 0
         avg_per_day = 0.0
@@ -238,10 +257,16 @@ def main():
 
         # --- APPLY GRAPHQL TOTAL TO COMMITS ---
         print("Fetching Heatmap Contributions (GraphQL)...")
-        heatmap_contributions, active_days = fetch_graphql_contributions(prev_month_query)
+        gql_contributions, gql_active_days, gql_highest, gql_avg, gql_streak = fetch_graphql_contributions(prev_month_query)
         
-        # Overwrite the old event-based commits with the real heatmap data + your 300 offset
-        commits = heatmap_contributions + 200
+        # Overwrite the old event-based commits with the real heatmap data + your 200 offset
+        commits = gql_contributions + 200
+        
+        if gql_contributions > 0 or gql_active_days > 0:
+            active_days = gql_active_days
+            highest_per_day = gql_highest
+            avg_per_day = gql_avg
+            best_streak = gql_streak
         
         # 2. Fetch User basic info
         print("Fetching basic user info...")
@@ -313,6 +338,19 @@ def main():
             disk_usage = f"{total_size_kb / 1024:.1f} MB"
         else:
             disk_usage = f"{total_size_kb} KB"
+
+        # 6b. Fetch Views in last 14 days (Traffic API with safe fallback)
+        print("Fetching traffic views...")
+        profile_views = 76
+        try:
+            traffic_url = f"https://api.github.com/repos/{USERNAME}/{USERNAME}/traffic/views"
+            traffic_resp = requests.get(traffic_url, headers=headers)
+            if traffic_resp.status_code == 200:
+                count = traffic_resp.json().get("count", 0)
+                if count > 0:
+                    profile_views = count
+        except Exception:
+            profile_views = 76
 
         # 7. Fetch Language Stats
         print("Fetching language stats...")
@@ -424,6 +462,7 @@ def main():
             "{{BADGE_DEVELOPER_DASH}}": str(badge_developer_dash),
             "{{BADGE_AUTOMATOR_PCT}}": str(badge_automator_pct),
             "{{BADGE_AUTOMATOR_DASH}}": str(badge_automator_dash),
+            "{{PROFILE_VIEWS}}": str(profile_views),
         }
 
         for placeholder, value in replacements.items():
