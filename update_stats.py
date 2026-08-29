@@ -341,8 +341,8 @@ def main():
         # Circumference for r=25 is 2 * pi * 25 = 157.08
         CIRCUMFERENCE = 157.08
 
-        # Badge 1: Commit Master (Milestone: 500 commits)
-        badge_commit_pct = min(100, max(5, round((commits / 500) * 100)))
+        # Badge 1: Commit Master (Milestone: 1000 commits)
+        badge_commit_pct = min(100, max(5, round((commits / 1000) * 100)))
         badge_commit_dash = round((badge_commit_pct / 100) * CIRCUMFERENCE, 1)
 
         # Badge 2: Master Forker (Milestone: 10 forks)
@@ -361,8 +361,8 @@ def main():
         badge_developer_pct = min(100, max(5, round((published_repos / 20) * 100)))
         badge_developer_dash = round((badge_developer_pct / 100) * CIRCUMFERENCE, 1)
 
-        # Badge 5: Automator (Milestone: 10 active/streak days)
-        badge_automator_pct = min(100, max(5, round((best_streak / 10) * 100)))
+        # Badge 5: Automator (Milestone: 30 active/streak days)
+        badge_automator_pct = min(100, max(5, round((best_streak / 30) * 100)))
         badge_automator_dash = round((badge_automator_pct / 100) * CIRCUMFERENCE, 1)
 
         # Read progress_template.svg
