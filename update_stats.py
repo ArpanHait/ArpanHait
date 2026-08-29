@@ -196,8 +196,21 @@ def main():
                 elif event_type in ["IssueCommentEvent", "CommitCommentEvent", "PullRequestReviewCommentEvent"] and payload.get("action") == "created":
                     comments += 1
 
+        # 1b. Fetch Merged PRs authored by user
+        print("Fetching merged PRs...")
+        merged_prs_url = f"https://api.github.com/search/issues?q=author:{USERNAME}+type:pr+is:merged"
+        merged_prs_response = requests.get(merged_prs_url, headers=headers)
+        if merged_prs_response.status_code == 200:
+            pr_merged = merged_prs_response.json().get("total_count", 0)
+        else:
+            print(f"❌ API ERROR on Merged PRs: Status {merged_prs_response.status_code}")
+            print(f"Details: {merged_prs_response.text}")
+            pr_merged = 0
+
         # Calculate Streak, Highest, and Average based on recent events
         best_streak = 0
+        highest_per_day = 0
+        avg_per_day = 0.0
 
         if commits_per_day:
             sorted_dates = sorted(commits_per_day.keys())
@@ -212,6 +225,8 @@ def main():
                 else:
                     current_streak = 1
             best_streak = max_streak
+            highest_per_day = max(commits_per_day.values())
+            avg_per_day = round(sum(commits_per_day.values()) / len(commits_per_day), 1)
 
         # Calculate Month Name and Dates
         today = date.today()
@@ -239,6 +254,9 @@ def main():
             user_data = user_response.json()
             
         following = user_data.get("following", 0)
+        followers = user_data.get("followers", 0)
+        following_offset = max(0, following - 10)
+        followers_offset = max(0, followers - 10)
 
         # 3. Fetch Orgs count
         print("Fetching orgs...")
@@ -252,13 +270,14 @@ def main():
         print("Fetching watched repos...")
         watching = fetch_paginated_count(f"https://api.github.com/users/{USERNAME}/subscriptions")
 
-        # 6. Fetch Repos for total stargazers, watchers, forks, and total repos
+        # 6. Fetch Repos for total stargazers, watchers, forks, total repos, and disk size
         print("Fetching repo stats...")
         stargazers = 0
         total_watchers = 0
         forks = 0
         forked_by_me = 0
         total_repos = 0  # --- NEW: Variable to hold total repository count ---
+        total_size_kb = 0
         repo_page = 1
         
         while True:
@@ -279,12 +298,21 @@ def main():
                 stargazers += repo.get("stargazers_count", 0)
                 total_watchers += repo.get("watchers_count", 0)
                 forks += repo.get("forks_count", 0)
+                total_size_kb += repo.get("size", 0)
                 if repo.get("fork") == True:
                     forked_by_me += 1
                 
             if len(repos) < 100:
                 break
             repo_page += 1
+
+        # Format total disk usage
+        if total_size_kb >= 1024 * 1024:
+            disk_usage = f"{total_size_kb / (1024 * 1024):.2f} GB"
+        elif total_size_kb >= 1024:
+            disk_usage = f"{total_size_kb / 1024:.1f} MB"
+        else:
+            disk_usage = f"{total_size_kb} KB"
 
         # 7. Fetch Language Stats
         print("Fetching language stats...")
@@ -309,6 +337,34 @@ def main():
         css_x = round(html_x + html_width, 1)
         sql_x = round(css_x + css_width, 1)
 
+        # 8. Calculate Badges Progress & Dash Arrays
+        # Circumference for r=25 is 2 * pi * 25 = 157.08
+        CIRCUMFERENCE = 157.08
+
+        # Badge 1: Commit Master (Milestone: 500 commits)
+        badge_commit_pct = min(100, max(5, round((commits / 500) * 100)))
+        badge_commit_dash = round((badge_commit_pct / 100) * CIRCUMFERENCE, 1)
+
+        # Badge 2: Master Forker (Milestone: 10 forks)
+        badge_forker_pct = min(100, max(5, round((forked_by_me / 10) * 100)))
+        badge_forker_dash = round((badge_forker_pct / 100) * CIRCUMFERENCE, 1)
+
+        # Badge 3: Super Polyglot (Milestone: 8 languages)
+        num_langs = len([k for k, v in lang_bytes.items() if v > 0])
+        if num_langs == 0:
+            num_langs = 4  # Fallback if GraphQL was rate-limited without token
+        badge_polyglot_pct = min(100, max(5, round((num_langs / 8) * 100)))
+        badge_polyglot_dash = round((badge_polyglot_pct / 100) * CIRCUMFERENCE, 1)
+
+        # Badge 4: Great Developer (Milestone: 20 public repos)
+        published_repos = max(0, total_repos - forked_by_me)
+        badge_developer_pct = min(100, max(5, round((published_repos / 20) * 100)))
+        badge_developer_dash = round((badge_developer_pct / 100) * CIRCUMFERENCE, 1)
+
+        # Badge 5: Automator (Milestone: 10 active/streak days)
+        badge_automator_pct = min(100, max(5, round((best_streak / 10) * 100)))
+        badge_automator_dash = round((badge_automator_pct / 100) * CIRCUMFERENCE, 1)
+
         # Read progress_template.svg
         template_filename = "progress_template.svg"
         output_filename = "progress.svg"
@@ -324,9 +380,13 @@ def main():
             "{{COMMITS}}": str(commits),
             "{{PR_REVIEWS}}": str(pr_reviews),
             "{{PR_OPENED}}": str(pr_opened),
+            "{{PR_MERGED}}": str(pr_merged),
             "{{ISSUES}}": str(issues),
             "{{COMMENTS}}": str(comments),
             "{{FOLLOWING}}": str(following),
+            "{{FOLLOWING_OFFSET}}": str(following_offset),
+            "{{FOLLOWERS}}": str(followers),
+            "{{FOLLOWERS_OFFSET}}": str(followers_offset),
             "{{ORGS}}": str(orgs),
             "{{STARRED}}": str(starred),
             "{{WATCHING}}": str(watching),
@@ -335,9 +395,12 @@ def main():
             "{{FORKS}}": str(forks),
             "{{FORKED_BY_ME}}": str(forked_by_me),
             "{{BEST_STREAK}}": str(best_streak),
+            "{{HIGHEST_PER_DAY}}": str(highest_per_day),
+            "{{AVG_PER_DAY}}": str(avg_per_day),
             "{{ACTIVE_DAYS}}": str(active_days),
             "{{MONTH_NAME}}": prev_month_name,
-            "{{TOTAL_REPOS}}": str(total_repos),  # --- NEW: Added the placeholder replacement ---
+            "{{TOTAL_REPOS}}": str(total_repos),
+            "{{DISK_USAGE}}": str(disk_usage),
             "{{PY_WIDTH}}": str(py_width),
             "{{JS_X}}": str(js_x),
             "{{JS_WIDTH}}": str(js_width),
@@ -351,6 +414,16 @@ def main():
             "{{CSS_WIDTH}}": str(css_width),
             "{{SQL_X}}": str(sql_x),
             "{{SQL_WIDTH}}": str(sql_width),
+            "{{BADGE_COMMIT_PCT}}": str(badge_commit_pct),
+            "{{BADGE_COMMIT_DASH}}": str(badge_commit_dash),
+            "{{BADGE_FORKER_PCT}}": str(badge_forker_pct),
+            "{{BADGE_FORKER_DASH}}": str(badge_forker_dash),
+            "{{BADGE_POLYGLOT_PCT}}": str(badge_polyglot_pct),
+            "{{BADGE_POLYGLOT_DASH}}": str(badge_polyglot_dash),
+            "{{BADGE_DEVELOPER_PCT}}": str(badge_developer_pct),
+            "{{BADGE_DEVELOPER_DASH}}": str(badge_developer_dash),
+            "{{BADGE_AUTOMATOR_PCT}}": str(badge_automator_pct),
+            "{{BADGE_AUTOMATOR_DASH}}": str(badge_automator_dash),
         }
 
         for placeholder, value in replacements.items():
