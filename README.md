@@ -44,6 +44,7 @@
 | **DeepFake Detection** | [View README](https://github.com/ArpanHait/DEEPFAKE_DETECTION/blob/main/README.md) | `Pytorch` `CNN` `ReactJS` `Vite5` `TailwindCSS` | [🔗 Live Demo](https://detectarp.netlify.app/) | 
 | **AI Anomaly Detection** | [View README](https://github.com/ArpanHait/AI_ANOMALY_DETECTION) | `Next js` `FastAPI` `Python` `Typescript` `Scikit-Learn` | [🔗 Live Demo](https://coreinsight-nine.vercel.app/) |
 | **Base 64 Converter** | [View README](https://github.com/ArpanHait/ArpanHait/blob/main/README.md) | `HTML` `Css` `JavaScript` | [🔗 Live Demo](https://baseconvo64.netlify.app/) |
+| **TermsRadar** | [View README](https://github.com/ArpanHait/TermsRadar/blob/main/README.md) | `JavaScript` `VirusTotal` `SafeBrowsing API` | [🔗 How To Use](https://github.com/ArpanHait/TermsRadar/blob/main/USER_GUIDE.md) |
 
 
 </div>
