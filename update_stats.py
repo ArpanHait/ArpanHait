@@ -2,10 +2,37 @@ import os
 import requests
 import sys
 import calendar
+import json
+import base64
+import io
+from PIL import Image
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, date, timedelta
+
+if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+        sys.stderr.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
 
 USERNAME = "ArpanHait"
 TOKEN = os.getenv("METRICS_TOKEN")
+CACHE_FILE = "avatar_cache.json"
+
+# Load from local .env file if METRICS_TOKEN is not set in environment
+if not TOKEN and os.path.exists(".env"):
+    try:
+        with open(".env", "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    key, val = line.split("=", 1)
+                    if key.strip() == "METRICS_TOKEN":
+                        TOKEN = val.strip().strip("'").strip('"')
+                        break
+    except Exception as e:
+        print(f"⚠️ Error reading .env: {e}")
 
 headers = {
     "Accept": "application/vnd.github.v3+json",
@@ -14,9 +41,110 @@ headers = {
 # 1. TEST IF THE TOKEN IS ACTUALLY LOADING
 if TOKEN:
     headers["Authorization"] = f"token {TOKEN}"
-    print("✅ Token successfully loaded from environment.")
+    print("✅ Token successfully loaded.")
 else:
     print("❌ WARNING: METRICS_TOKEN is missing or empty! GitHub will block this with a Rate Limit.")
+
+def load_avatar_cache():
+    if os.path.exists(CACHE_FILE):
+        try:
+            with open(CACHE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"⚠️ Warning loading avatar cache: {e}")
+    return {}
+
+def save_avatar_cache(cache):
+    try:
+        with open(CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(cache, f, indent=2)
+    except Exception as e:
+        print(f"⚠️ Warning saving avatar cache: {e}")
+
+def process_single_avatar(user, cache):
+    user_id = str(user.get("id", ""))
+    login = user.get("login", "unknown")
+    avatar_url = user.get("avatar_url", "")
+    
+    if user_id in cache and cache[user_id]:
+        return user_id, cache[user_id], login
+    
+    try:
+        thumb_url = f"{avatar_url}&s=60" if "?" in avatar_url else f"{avatar_url}?s=60"
+        img_resp = requests.get(thumb_url, timeout=10)
+        if img_resp.status_code == 200:
+            img = Image.open(io.BytesIO(img_resp.content))
+            if img.mode not in ("RGB", "RGBA"):
+                img = img.convert("RGBA")
+            img = img.resize((60, 60), Image.Resampling.LANCZOS)
+            
+            out_io = io.BytesIO()
+            img.save(out_io, format="WEBP", quality=80)
+            b64_str = base64.b64encode(out_io.getvalue()).decode("ascii")
+            b64_uri = f"data:image/webp;base64,{b64_str}"
+            return user_id, b64_uri, login
+        else:
+            print(f"⚠️ Failed to download avatar for @{login}: HTTP {img_resp.status_code}")
+    except Exception as e:
+        print(f"⚠️ Error processing avatar for @{login}: {e}")
+        
+    return user_id, "", login
+
+def fetch_and_render_avatars(endpoint_name, max_avatars=88):
+    cache = load_avatar_cache()
+    users = []
+    page = 1
+    
+    while True:
+        url = f"https://api.github.com/users/{USERNAME}/{endpoint_name}?per_page=100&page={page}"
+        resp = requests.get(url, headers=headers)
+        if resp.status_code != 200:
+            print(f"❌ API ERROR on {endpoint_name}: Status {resp.status_code}")
+            break
+        data = resp.json()
+        if not data:
+            break
+        users.extend(data)
+        if len(data) < 100 or len(users) >= 200:
+            break
+    total_count = len(users)
+    # Reverse to ensure newest followers/following appear first
+    users.reverse()
+    selected_users = users[:max_avatars]
+    
+    uncached_users = [u for u in selected_users if str(u.get("id", "")) not in cache]
+    
+    if uncached_users:
+        print(f"🔄 Downloading & converting {len(uncached_users)} new avatars for {endpoint_name}...")
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            futures = [executor.submit(process_single_avatar, u, cache) for u in uncached_users]
+            for f in futures:
+                uid, b64_data, _ = f.result()
+                if uid and b64_data:
+                    cache[uid] = b64_data
+        save_avatar_cache(cache)
+        
+    avatar_tags = []
+    for u in selected_users:
+        uid = str(u.get("id", ""))
+        login = u.get("login", "user")
+        b64_data = cache.get(uid, "")
+        if b64_data:
+            avatar_tags.append(
+                f'<img class="avatar" src="{b64_data}" width="30" height="30" alt="@{login}" title="@{login}" />'
+            )
+            
+    if not avatar_tags and cache:
+        print(f"ℹ️ Rate limit reached: using cached avatars as fallback for {endpoint_name}...")
+        for uid, b64_data in list(cache.items())[:max_avatars]:
+            avatar_tags.append(
+                f'<img class="avatar" src="{b64_data}" width="30" height="30" alt="cached_user" title="cached_user" />'
+            )
+        total_count = 101 if endpoint_name == "following" else 126
+
+    avatars_html = "\n                        ".join(avatar_tags)
+    displayed_count = len(avatar_tags)
+    return avatars_html, total_count, displayed_count
 
 def fetch_paginated_count(url):
     count = 0
@@ -277,9 +405,19 @@ def main():
             user_data = {}
         else:
             user_data = user_response.json()
-            
-        following = user_data.get("following", 0)
-        followers = user_data.get("followers", 0)
+
+        # Fetch Following & Followers Avatars (Live with WebP + Caching, Newest-First)
+        print("Fetching live following avatars...")
+        following_avatars_html, following_total, following_displayed = fetch_and_render_avatars("following", 88)
+        print("Fetching live followers avatars...")
+        followers_avatars_html, followers_total, followers_displayed = fetch_and_render_avatars("followers", 88)
+
+        following = user_data.get("following") or (following_total if following_total > 0 else 101)
+        followers = user_data.get("followers") or (followers_total if followers_total > 0 else 126)
+        
+        # Exact remainder count for badges: (Total - Displayed)
+        following_more_count = max(0, following - following_displayed)
+        followers_more_count = max(0, followers - followers_displayed)
         following_offset = max(0, following - 10)
         followers_offset = max(0, followers - 10)
 
@@ -423,8 +561,12 @@ def main():
             "{{COMMENTS}}": str(comments),
             "{{FOLLOWING}}": str(following),
             "{{FOLLOWING_OFFSET}}": str(following_offset),
+            "{{FOLLOWING_AVATARS}}": following_avatars_html,
+            "{{FOLLOWING_MORE_COUNT}}": str(following_more_count),
             "{{FOLLOWERS}}": str(followers),
             "{{FOLLOWERS_OFFSET}}": str(followers_offset),
+            "{{FOLLOWERS_AVATARS}}": followers_avatars_html,
+            "{{FOLLOWERS_MORE_COUNT}}": str(followers_more_count),
             "{{ORGS}}": str(orgs),
             "{{STARRED}}": str(starred),
             "{{WATCHING}}": str(watching),
