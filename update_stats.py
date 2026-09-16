@@ -99,14 +99,16 @@ def fetch_and_render_avatars(endpoint_name, max_avatars=88):
         url = f"https://api.github.com/users/{USERNAME}/{endpoint_name}?per_page=100&page={page}"
         resp = requests.get(url, headers=headers)
         if resp.status_code != 200:
-            print(f"❌ API ERROR on {endpoint_name}: Status {resp.status_code}")
+            print(f"❌ API ERROR on {endpoint_name} (page {page}): Status {resp.status_code}")
             break
         data = resp.json()
         if not data:
             break
         users.extend(data)
-        if len(data) < 100 or len(users) >= 200:
+        if len(data) < 100:
             break
+        page += 1
+
     total_count = len(users)
     # Reverse to ensure newest followers/following appear first
     users.reverse()
@@ -115,7 +117,7 @@ def fetch_and_render_avatars(endpoint_name, max_avatars=88):
     uncached_users = [u for u in selected_users if str(u.get("id", "")) not in cache]
     
     if uncached_users:
-        print(f"🔄 Downloading & converting {len(uncached_users)} new avatars for {endpoint_name}...")
+        print(f"   🔄 Downloading & converting {len(uncached_users)} new avatars for {endpoint_name}...")
         with ThreadPoolExecutor(max_workers=10) as executor:
             futures = [executor.submit(process_single_avatar, u, cache) for u in uncached_users]
             for f in futures:
@@ -135,7 +137,7 @@ def fetch_and_render_avatars(endpoint_name, max_avatars=88):
             )
             
     if not avatar_tags and cache:
-        print(f"ℹ️ Rate limit reached: using cached avatars as fallback for {endpoint_name}...")
+        print(f"   ℹ️ Rate limit reached: using cached avatars as fallback for {endpoint_name}...")
         for uid, b64_data in list(cache.items())[:max_avatars]:
             avatar_tags.append(
                 f'<img class="avatar" src="{b64_data}" width="30" height="30" alt="cached_user" title="cached_user" />'
@@ -295,44 +297,50 @@ def fetch_graphql_contributions(prev_month_query):
 
 def main():
     try:
-        print("Fetching GitHub Stats...")
+        print("========================================")
+        print("🚀 Starting GitHub Stats & Profile Update")
+        print("========================================")
         
-        # 1. Fetch Events
+        # ==========================================
+        # PHASE 1: ALL CORE METRICS & DETAILS FIRST
+        # ==========================================
+        
+        # 1. Fetch User Basic Info
+        print("[1/11] 👤 Fetching basic user profile...")
+        user_response = requests.get(f"https://api.github.com/users/{USERNAME}", headers=headers)
+        if user_response.status_code != 200:
+            print(f"⚠️ API ERROR on User Info: Status {user_response.status_code}")
+            user_data = {}
+        else:
+            user_data = user_response.json()
+
+        # 2. Fetch Events (commits, PR reviews, PR opened, issues, comments)
+        print("[2/11] 📊 Fetching recent events & commit activity...")
         commits = 0
         pr_reviews = 0
         pr_opened = 0
         issues = 0
         comments = 0
-        
-        # Dictionary to track commits by date for streaks and averages
         commits_per_day = {}
 
         for page in range(1, 4):
             events_url = f"https://api.github.com/users/{USERNAME}/events?per_page=100&page={page}"
             events_response = requests.get(events_url, headers=headers)
-            
             if events_response.status_code != 200:
-                print(f"❌ API ERROR on Events: Status {events_response.status_code}")
-                print(f"Details: {events_response.text}")
+                print(f"⚠️ API ERROR on Events (page {page}): Status {events_response.status_code}")
                 break
-                
             events = events_response.json()
             if not events:
                 break
-                
             for event in events:
                 event_type = event.get("type")
                 payload = event.get("payload", {})
-                
                 if event_type == "PushEvent":
                     commit_count = len(payload.get("commits", []))
                     commits += commit_count
-                    
-                    # Track dates for streaks and averages
                     date_str = event.get("created_at", "")[:10]
                     if date_str:
                         commits_per_day[date_str] = commits_per_day.get(date_str, 0) + commit_count
-                        
                 elif event_type == "PullRequestReviewEvent":
                     pr_reviews += 1
                 elif event_type == "PullRequestEvent" and payload.get("action") == "opened":
@@ -342,18 +350,24 @@ def main():
                 elif event_type in ["IssueCommentEvent", "CommitCommentEvent", "PullRequestReviewCommentEvent"] and payload.get("action") == "created":
                     comments += 1
 
-        # 1b. Fetch Merged PRs authored by user
-        print("Fetching merged PRs...")
+        # 3. Fetch Merged PRs
+        print("[3/11] 🔀 Fetching merged pull requests...")
         merged_prs_url = f"https://api.github.com/search/issues?q=author:{USERNAME}+type:pr+is:merged"
         merged_prs_response = requests.get(merged_prs_url, headers=headers)
         if merged_prs_response.status_code == 200:
             pr_merged = merged_prs_response.json().get("total_count", 0)
         else:
-            print(f"❌ API ERROR on Merged PRs: Status {merged_prs_response.status_code}")
-            print(f"Details: {merged_prs_response.text}")
+            print(f"⚠️ API ERROR on Merged PRs: Status {merged_prs_response.status_code}")
             pr_merged = 0
 
-        # Calculate Streak, Highest, and Average based on recent events
+        # Calculate Month Name and Dates for Heatmap
+        today = date.today()
+        first_of_this_month = today.replace(day=1)
+        last_day_prev_month = first_of_this_month - timedelta(days=1)
+        prev_month_name = last_day_prev_month.strftime("%B")
+        prev_month_query = last_day_prev_month.strftime("%Y-%m")
+
+        # Event-based fallback calculation for streak and averages
         active_days = 0
         best_streak = 0
         highest_per_day = 0
@@ -375,88 +389,44 @@ def main():
             highest_per_day = max(commits_per_day.values())
             avg_per_day = round(sum(commits_per_day.values()) / len(commits_per_day), 1)
 
-        # Calculate Month Name and Dates
-        today = date.today()
-        first_of_this_month = today.replace(day=1)
-        last_day_prev_month = first_of_this_month - timedelta(days=1)
-        
-        prev_month_name = last_day_prev_month.strftime("%B")  # e.g., "March"
-        prev_month_query = last_day_prev_month.strftime("%Y-%m")  # e.g., "2026-03"
-
-        # --- APPLY GRAPHQL TOTAL TO COMMITS ---
-        print("Fetching Heatmap Contributions (GraphQL)...")
+        # 4. Fetch Heatmap Contributions & Streaks via GraphQL
+        print("[4/11] 🟩 Fetching heatmap contributions & streaks (GraphQL)...")
         gql_contributions, gql_active_days, gql_highest, gql_avg, gql_streak = fetch_graphql_contributions(prev_month_query)
         
-        # Overwrite the old event-based commits with the real heatmap data + your 200 offset
-        commits = gql_contributions + 200
-        
         if gql_contributions > 0 or gql_active_days > 0:
+            commits = gql_contributions + 200
             active_days = gql_active_days
             highest_per_day = gql_highest
             avg_per_day = gql_avg
             best_streak = gql_streak
-        
-        # 2. Fetch User basic info
-        print("Fetching basic user info...")
-        user_response = requests.get(f"https://api.github.com/users/{USERNAME}", headers=headers)
-        if user_response.status_code != 200:
-            print(f"❌ API ERROR on User Info: Status {user_response.status_code}")
-            print(f"Details: {user_response.text}")
-            user_data = {}
         else:
-            user_data = user_response.json()
+            commits = commits + 200
 
-        # Fetch Following & Followers Avatars (Live with WebP + Caching, Newest-First)
-        print("Fetching live following avatars...")
-        following_avatars_html, following_total, following_displayed = fetch_and_render_avatars("following", 88)
-        print("Fetching live followers avatars...")
-        followers_avatars_html, followers_total, followers_displayed = fetch_and_render_avatars("followers", 88)
-
-        following = user_data.get("following") or (following_total if following_total > 0 else 101)
-        followers = user_data.get("followers") or (followers_total if followers_total > 0 else 126)
-        
-        # Exact remainder count for badges: (Total - Displayed)
-        following_more_count = max(0, following - following_displayed)
-        followers_more_count = max(0, followers - followers_displayed)
-        following_offset = max(0, following - 10)
-        followers_offset = max(0, followers - 10)
-
-        # 3. Fetch Orgs count
-        print("Fetching orgs...")
+        # 5. Fetch Account Activity Counts (Orgs, Starred, Subscriptions/Watching)
+        print("[5/11] 🏢 Fetching interaction counts (orgs, starred, watching)...")
         orgs = fetch_paginated_count(f"https://api.github.com/users/{USERNAME}/orgs")
-
-        # 4. Fetch Starred count (repositories I starred)
-        print("Fetching starred repos...")
         starred = fetch_paginated_count(f"https://api.github.com/users/{USERNAME}/starred")
-
-        # 5. Fetch Subscriptions count (repositories I am watching)
-        print("Fetching watched repos...")
         watching = fetch_paginated_count(f"https://api.github.com/users/{USERNAME}/subscriptions")
 
-        # 6. Fetch Repos for total stargazers, watchers, forks, total repos, and disk size
-        print("Fetching repo stats...")
+        # 6. Fetch Repositories Stats & Total Disk Usage
+        print("[6/11] 📦 Fetching repo stats & disk usage...")
         stargazers = 0
         total_watchers = 0
         forks = 0
         forked_by_me = 0
-        total_repos = 0  # --- NEW: Variable to hold total repository count ---
+        total_repos = 0
         total_size_kb = 0
         repo_page = 1
         
         while True:
             repos_response = requests.get(f"https://api.github.com/users/{USERNAME}/repos?per_page=100&page={repo_page}", headers=headers)
             if repos_response.status_code != 200:
-                print(f"❌ API ERROR on Repos: Status {repos_response.status_code}")
-                print(f"Details: {repos_response.text}")
+                print(f"⚠️ API ERROR on Repos (page {repo_page}): Status {repos_response.status_code}")
                 break
-                
             repos = repos_response.json()
             if not repos:
                 break
-            
-            # --- NEW: Add the number of repos on this page to the total ---
             total_repos += len(repos)
-            
             for repo in repos:
                 stargazers += repo.get("stargazers_count", 0)
                 total_watchers += repo.get("watchers_count", 0)
@@ -464,12 +434,10 @@ def main():
                 total_size_kb += repo.get("size", 0)
                 if repo.get("fork") == True:
                     forked_by_me += 1
-                
             if len(repos) < 100:
                 break
             repo_page += 1
 
-        # Format total disk usage
         if total_size_kb >= 1024 * 1024:
             disk_usage = f"{total_size_kb / (1024 * 1024):.2f} GB"
         elif total_size_kb >= 1024:
@@ -477,8 +445,8 @@ def main():
         else:
             disk_usage = f"{total_size_kb} KB"
 
-        # 6b. Fetch Views in last 14 days (Traffic API with safe fallback)
-        print("Fetching traffic views...")
+        # 7. Fetch Traffic Views
+        print("[7/11] 👁️ Fetching profile traffic views...")
         profile_views = 76
         try:
             traffic_url = f"https://api.github.com/repos/{USERNAME}/{USERNAME}/traffic/views"
@@ -490,13 +458,12 @@ def main():
         except Exception:
             profile_views = 76
 
-        # 7. Fetch Language Stats
-        print("Fetching language stats...")
+        # 8. Fetch Language Stats
+        print("[8/11] 💻 Fetching language distribution (GraphQL)...")
         lang_bytes = fetch_language_stats()
-        
         total_lang_bytes = sum(lang_bytes.values())
         if total_lang_bytes == 0:
-            total_lang_bytes = 1 # Prevent division by zero
+            total_lang_bytes = 1
             
         py_width = round((lang_bytes.get('Python', 0) / total_lang_bytes) * 460, 1)
         js_width = round((lang_bytes.get('JavaScript', 0) / total_lang_bytes) * 460, 1)
@@ -513,35 +480,49 @@ def main():
         css_x = round(html_x + html_width, 1)
         sql_x = round(css_x + css_width, 1)
 
-        # 8. Calculate Badges Progress & Dash Arrays
-        # Circumference for r=25 is 2 * pi * 25 = 157.08
+        # 9. Calculate Live Badges Progress & Dash Arrays
+        print("[9/11] 🏅 Computing live milestone badges...")
         CIRCUMFERENCE = 157.08
-
-        # Badge 1: Commit Master (Milestone: 1000 commits)
         badge_commit_pct = min(100, max(5, round((commits / 1000) * 100)))
         badge_commit_dash = round((badge_commit_pct / 100) * CIRCUMFERENCE, 1)
 
-        # Badge 2: Master Forker (Milestone: 10 forks)
         badge_forker_pct = min(100, max(5, round((forked_by_me / 10) * 100)))
         badge_forker_dash = round((badge_forker_pct / 100) * CIRCUMFERENCE, 1)
 
-        # Badge 3: Super Polyglot (Milestone: 8 languages)
         num_langs = len([k for k, v in lang_bytes.items() if v > 0])
         if num_langs == 0:
-            num_langs = 4  # Fallback if GraphQL was rate-limited without token
+            num_langs = 4
         badge_polyglot_pct = min(100, max(5, round((num_langs / 8) * 100)))
         badge_polyglot_dash = round((badge_polyglot_pct / 100) * CIRCUMFERENCE, 1)
 
-        # Badge 4: Great Developer (Milestone: 20 public repos)
         published_repos = max(0, total_repos - forked_by_me)
         badge_developer_pct = min(100, max(5, round((published_repos / 20) * 100)))
         badge_developer_dash = round((badge_developer_pct / 100) * CIRCUMFERENCE, 1)
 
-        # Badge 5: Automator (Milestone: 30 active/streak days)
         badge_automator_pct = min(100, max(5, round((best_streak / 30) * 100)))
         badge_automator_dash = round((badge_automator_pct / 100) * CIRCUMFERENCE, 1)
 
-        # Read progress_template.svg
+        # ==========================================
+        # PHASE 2: AVATAR PIPELINE (HEAVY STRINGS LAST)
+        # ==========================================
+        
+        # 10. Fetch Following Avatars (Live with WebP + Caching, Newest-First)
+        print("[10/11] 👥 Fetching & processing following avatars (newest first)...")
+        following_avatars_html, following_total, following_displayed = fetch_and_render_avatars("following", 88)
+        following = user_data.get("following") or (following_total if following_total > 0 else 101)
+        following_more_count = max(0, following - following_displayed)
+        following_offset = max(0, following - 10)
+
+        # 11. Fetch Followers Avatars (Live with WebP + Caching, Newest-First)
+        print("[11/11] 👥 Fetching & processing followers avatars (newest first)...")
+        followers_avatars_html, followers_total, followers_displayed = fetch_and_render_avatars("followers", 88)
+        followers = user_data.get("followers") or (followers_total if followers_total > 0 else 126)
+        followers_more_count = max(0, followers - followers_displayed)
+        followers_offset = max(0, followers - 10)
+
+        # ==========================================
+        # PHASE 3: SVG GENERATION & CLEAN LOGGING
+        # ==========================================
         template_filename = "progress_template.svg"
         output_filename = "progress.svg"
         if not os.path.exists(template_filename):
@@ -551,7 +532,6 @@ def main():
         with open(template_filename, "r", encoding="utf-8") as f:
             svg_content = f.read()
 
-        # Replace placeholders
         replacements = {
             "{{COMMITS}}": str(commits),
             "{{PR_REVIEWS}}": str(pr_reviews),
@@ -610,12 +590,22 @@ def main():
         for placeholder, value in replacements.items():
             svg_content = svg_content.replace(placeholder, value)
 
-        # Save the updated svg
         with open(output_filename, "w", encoding="utf-8") as f:
             f.write(svg_content)
             
         print(f"✅ Successfully updated {output_filename} with new stats.")
-        print("Gathered Data:", replacements)
+        print("----------------------------------------")
+        print("📈 GATHERED METRICS SUMMARY:")
+        print(f"   • Total Commits:      {commits}")
+        print(f"   • PRs (Rev/Open/Mrg): {pr_reviews} / {pr_opened} / {pr_merged}")
+        print(f"   • Issues & Comments:  {issues} issues, {comments} comments")
+        print(f"   • Best Streak:        {best_streak} days ({prev_month_name}: {active_days} active days)")
+        print(f"   • Repositories:       {total_repos} repos ({stargazers} stars, {forks} forks, {disk_usage})")
+        print(f"   • Profile Views:      {profile_views}")
+        print(f"   • Following:          {following} total ({following_displayed} rendered, +{following_more_count} more)")
+        print(f"   • Followers:          {followers} total ({followers_displayed} rendered, +{followers_more_count} more)")
+        print(f"   • Badges:             Commit {badge_commit_pct}%, Forker {badge_forker_pct}%, Polyglot {badge_polyglot_pct}%, Developer {badge_developer_pct}%, Automator {badge_automator_pct}%")
+        print("========================================")
 
     except Exception as e:
         print(f"❌ An error occurred: {e}")
