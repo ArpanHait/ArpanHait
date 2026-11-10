@@ -394,13 +394,11 @@ def main():
         gql_contributions, gql_active_days, gql_highest, gql_avg, gql_streak = fetch_graphql_contributions(prev_month_query)
         
         if gql_contributions > 0 or gql_active_days > 0:
-            commits = gql_contributions + 200
+            commits = gql_contributions
             active_days = gql_active_days
             highest_per_day = gql_highest
             avg_per_day = gql_avg
             best_streak = gql_streak
-        else:
-            commits = commits + 200
 
         # 5. Fetch Account Activity Counts (Orgs, Starred, Subscriptions/Watching)
         print("[5/11] 🏢 Fetching interaction counts (orgs, starred, watching)...")
